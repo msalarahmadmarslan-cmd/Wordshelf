@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7A1F2B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="WordShelf: learn English with Urdu help. Words, grammar, tenses, quizzes, tests and games.">
+<title>WordShelf</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Nastaliq+Urdu:wght@400;600&family=Playfair+Display:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F7F6;--card:#fff;--ink:#12232B;--mute:#5B6F77;--line:#D5E2E0;--brand:#0F766E;--brand-ink:#fff;--hi:#7A2E65;--ok:#15803D;--bad:#B91C1C;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1A1F;--card:#16262D;--ink:#E8F1F0;--mute:#9DB2B8;--line:#27404A;--brand:#2DD4BF;--brand-ink:#06201C;--hi:#E9A8DA;--ok:#4ADE80;--bad:#F87171}}
+:root[data-theme="dark"]{--bg:#0E1A1F;--card:#16262D;--ink:#E8F1F0;--mute:#9DB2B8;--line:#27404A;--brand:#2DD4BF;--brand-ink:#06201C;--hi:#E9A8DA;--ok:#4ADE80;--bad:#F87171}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;line-height:1.5}
+.ur{font-family:'Noto Nastaliq Urdu','Noto Naskh Arabic',serif;direction:rtl;line-height:2.1}
+main{max-width:560px;margin:0 auto;padding:20px 16px 96px}
+h1{font-size:28px;font-weight:800;margin:4px 0 2px}
+h2{font-size:20px;margin:22px 0 8px;font-weight:800}
+.sub{color:var(--mute);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.en{font-size:20px;font-weight:800}
+.pr{color:var(--hi);font-size:18px}
+.mean{color:var(--mute);font-size:17px}
+.ex{color:var(--mute);font-size:15px;margin-top:4px}
+button{font:inherit;cursor:pointer}
+.spk{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--brand);color:var(--brand-ink);font-size:18px}
+:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;border:0;background:none;color:var(--mute);padding:8px 2px;border-radius:10px;font-size:13px;font-weight:700}
+nav button span{display:block;font-size:20px}
+nav button[aria-selected="true"]{color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent)}
+.tag{display:inline-block;font-size:13px;font-weight:700;color:var(--hi);margin:14px 0 0}
+.opt{display:block;width:100%;text-align:start;margin:8px 0;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,transparent)}
+.go{border:0;background:var(--brand);color:var(--brand-ink);padding:12px 20px;border-radius:12px;font-weight:800;font-size:16px;margin-top:8px}
+.big{font-size:44px;font-weight:800;color:var(--brand)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--brand)}
+html:root:not([data-theme="none"]){--bg:#1D1B4F;--card:#fff;--ink:#1E1B4B;--mute:#5B5880;--line:#E4E1FF;--brand:#7C5CFF;--brand-ink:#fff;--hi:#C2185B;--ok:#0E9F6E;--bad:#E02D3C}
+body{background:radial-gradient(900px 500px at 50% -160px,#5B4BFF 0,transparent 70%),#1D1B4F;color:#fff;min-height:100vh}
+main{padding-bottom:130px}
+h1{color:#fff;font-size:32px;font-weight:900;margin:14px 0 0}
+.sub{color:#C9C4FF;font-size:19px;margin:0 0 14px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:17px;color:#FFC93C}
+.chip{background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:3px 12px;font-size:15px}
+.card{color:var(--ink);border:0;border-radius:22px;box-shadow:0 5px 0 rgba(0,0,0,.2);border-inline-start:9px solid #FFC93C}
+.card:nth-of-type(4n+2){border-inline-start-color:#FF6B6B}.card:nth-of-type(4n+3){border-inline-start-color:#2EC4B6}.card:nth-of-type(4n){border-inline-start-color:#7C5CFF}
+.en{font-weight:900}
+.tag{color:#FFC93C;font-size:19px;font-weight:900;margin-top:20px}
+nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));border-radius:26px;background:#fff;border:0;padding:6px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
+nav button{color:#5B5880;font-weight:800;border-radius:20px}
+nav button[aria-selected="true"]{color:#fff;background:linear-gradient(135deg,#7C5CFF,#E4308C)}
+.go{background:#FFC93C;color:#1E1B4B;border-radius:16px;box-shadow:0 4px 0 #C99A00;font-weight:900;padding:14px 18px}
+.go:active{transform:translateY(3px);box-shadow:none}
+.row .go{flex:1}
+.spk{background:linear-gradient(135deg,#7C5CFF,#E4308C);width:52px;height:52px;box-shadow:0 4px 0 rgba(0,0,0,.22)}
+.opt{border:0;border-radius:18px;background:#fff;color:#1E1B4B;font-size:21px;box-shadow:0 5px 0 rgba(0,0,0,.2);padding:14px 16px}
+.opt.ok{background:#C9F7E2;box-shadow:0 0 0 3px #0E9F6E}.opt.bad{background:#FFD3D6;box-shadow:0 0 0 3px #E02D3C}
+.bar{height:12px;background:rgba(255,255,255,.2);border-radius:6px}.bar i{background:#FFC93C;border-radius:6px}
+.big{color:#7C5CFF;font-size:56px}
+.fc{border-radius:30px;padding:26px 18px 22px;text-align:center;color:#fff;box-shadow:0 8px 0 rgba(0,0,0,.28);margin:16px 0}
+.fc .w{font-size:46px;font-weight:900;line-height:1.15}
+.fc .p{display:inline-block;background:rgba(255,255,255,.22);border-radius:999px;padding:0 20px;font-size:26px;margin-top:6px}
+.fc .m{font-size:28px}
+.fc .e{margin-top:8px;font-size:16px;opacity:.95}
+.fc .spk{background:#FFC93C;color:#1E1B4B;width:66px;height:66px;font-size:28px}
+body{background:linear-gradient(180deg,#EEE8FF 0,#F8F5FF 260px,#FFFBF2 100%) fixed;color:#2B2A4C}
+h1{color:#2B2A4C}.sub{color:#6B6892}.top{color:#7C5CFF}
+.chip{background:#fff;color:#5B5880;box-shadow:0 2px 6px rgba(80,60,160,.15)}
+.card{box-shadow:0 4px 14px rgba(80,60,160,.12);border:1px solid #ECE7FF;border-inline-start:8px solid #FFC93C}
+.fc{color:#2B2A4C;box-shadow:0 6px 18px rgba(80,60,160,.16)}
+.fc .p{background:rgba(255,255,255,.8);color:#C2185B}.fc .e{opacity:.85}
+.fc .spk{background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.go{background:#FFE9A8;color:#3B2F00;box-shadow:0 4px 0 #EBCB6B}
+.spk{background:linear-gradient(135deg,#A78BFA,#F9A8D4);box-shadow:0 3px 8px rgba(80,60,160,.2)}
+nav{box-shadow:0 6px 22px rgba(80,60,160,.22);border:1px solid #ECE7FF}
+nav button[aria-selected="true"]{background:#E8E0FF;color:#4B3FD6}
+.bar{background:#E4DEFF}.bar i{background:#A78BFA}
+.opt{border:1px solid #ECE7FF;box-shadow:0 3px 10px rgba(80,60,160,.1)}
+.tag{color:#7C5CFF}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.ch{border:0;border-radius:14px;background:#F1ECFF;color:#2B2A4C;padding:6px 12px;font-size:16px;text-align:center}
+.ch span{display:block;color:#C2185B;font-size:15px;line-height:1.8}
+.sent{background:#FFF8E1;border-radius:14px;padding:10px 12px;margin-top:8px}
+.intro{color:#2B2A4C;background:#FFF8E1}
+nav button{font-size:11.5px;padding:8px 0}
+input{flex:1;min-width:0;font:inherit;font-size:18px;padding:12px 14px;border-radius:14px;border:2px solid #D9D2FF;background:#fff;color:#2B2A4C}
+.credit{text-align:center;color:#8A86B0;font-weight:800;margin:28px 0 0;font-size:14px}
+nav{overflow-x:auto}nav button{flex:0 0 auto;min-width:66px}
+.vr{display:flex;align-items:center;gap:10px;width:100%;border:0;background:#fff;border-radius:14px;padding:8px 12px;margin:6px 0;text-align:start;color:#2B2A4C;font:inherit;box-shadow:0 2px 8px rgba(80,60,160,.1)}
+.vr .n{color:#A29DC8;font-size:13px;min-width:30px}.vr .e{flex:1}.vr .e b{display:block;font-size:19px}.vr .e i{color:#C2185B;font-style:normal;font-size:16px;line-height:1.8}.vr .u{font-size:18px;text-align:end}
+.tbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#fff;border-radius:16px;padding:8px 14px;margin-bottom:10px;box-shadow:0 3px 12px rgba(80,60,160,.18);display:flex;align-items:center;gap:12px;color:#2B2A4C;font-weight:800}
+.tl{flex:1;height:10px;background:#E4DEFF;border-radius:6px;overflow:hidden}.tl i{display:block;height:100%;width:100%;background:#FF6B6B;border-radius:6px;transition:width 1s linear}
+.snd{border:0;border-radius:999px;background:#fff;color:#2B2A4C;font-weight:800;padding:5px 13px;box-shadow:0 2px 6px rgba(80,60,160,.15)}
+.spk{display:none}.fc .spk{display:inline-flex;align-items:center;justify-content:center}
+.hero{text-align:center;padding:26px 8px 8px}.bigemoji{font-size:72px;line-height:1}
+.step{display:flex;gap:12px;align-items:flex-start}.step b{font-size:26px}
+#bf{position:fixed;right:14px;bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:20}
+#bf button{width:46px;height:46px;border-radius:50%;border:0;background:#fff;color:#4B3FD6;font-size:18px;font-weight:900;box-shadow:0 4px 14px rgba(80,60,160,.3)}#bf button:disabled{opacity:.35}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.tile{border:0;border-radius:22px;background:#fff;color:#2B2A4C;font:inherit;font-weight:800;font-size:17px;padding:22px 10px;text-align:center;box-shadow:0 4px 14px rgba(80,60,160,.12)}
+.tile span{display:block;font-size:42px;margin-bottom:6px}
+.tile:nth-child(4n+1){background:#FFF3C4}.tile:nth-child(4n+2){background:#FFE0E6}.tile:nth-child(4n+3){background:#D7F5EA}.tile:nth-child(4n){background:#E3DAFF}
+html:root:not([data-theme='none']){--ink:#1F1F1F;--mute:#5F6368;--hi:#0B57D0;--card:#fff;--line:#E3E6EA}
+body{background:#fff;color:#1F1F1F}
+h1{color:#1F1F1F}.sub{color:#5F6368}.top{color:#0B57D0}
+.chip{background:#F0F4F9;color:#1F1F1F;box-shadow:none}
+.card:nth-of-type(n){border:1px solid #E3E6EA;box-shadow:none;border-radius:20px;color:#1F1F1F}
+.fc{background:#F0F4F9!important;color:#1F1F1F;box-shadow:none}
+.fc .p{background:#fff;color:#0B57D0}.fc .spk,.spk{background:#D3E3FD;box-shadow:none}
+.emo{font-size:84px;line-height:1.1;margin-bottom:4px}
+.go{background:#D3E3FD;color:#0B57D0;box-shadow:none;border-radius:999px}.go:active{transform:none;opacity:.8}
+nav{background:#fff;border:1px solid #E3E6EA;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+nav button{color:#5F6368}nav button[aria-selected="true"]{background:#D3E3FD;color:#0B57D0}
+.tile:nth-child(n){background:#F0F4F9;box-shadow:none;border-radius:24px}
+.opt{border:1px solid #DADCE0;box-shadow:none;background:#fff}.opt.ok{background:#E6F4EA;box-shadow:none;border-color:#34A853}.opt.bad{background:#FCE8E6;box-shadow:none;border-color:#EA4335}
+.bar,.tl{background:#E8EAED}.bar i,.tl i{background:#8AB4F8}
+.vr,.ch{background:#F8F9FA;box-shadow:none}.sent,.intro{background:#F8F9FA}
+.tbar,.snd{box-shadow:none;border:1px solid #E3E6EA}
+.tag,.big{color:#0B57D0}.pr,.ch span,.vr .e i{color:#0B57D0}
+#bf button{box-shadow:0 2px 8px rgba(0,0,0,.15);color:#0B57D0}
+.credit{color:#9AA0A6}.badges{display:flex;gap:14px;margin-top:8px;font-size:15px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mg>div{display:grid;gap:8px;align-content:start}
+.mt{border:1px solid #DADCE0;background:#fff;border-radius:16px;padding:12px;font:inherit;font-size:17px;color:#1F1F1F}.mt.sel{background:#D3E3FD;border-color:#0B57D0}.mt.ok{background:#E6F4EA;border-color:#34A853;opacity:.7}
+.vr .n{font-size:22px}
+nav{display:none!important}
+main{padding-bottom:96px}
+#bf{left:14px;right:14px;justify-content:space-between;pointer-events:none;bottom:calc(16px + env(safe-area-inset-bottom,0px))!important}
+#bf button{pointer-events:auto;width:52px;height:52px;font-size:20px}
+.slots{font-size:34px;font-weight:900;letter-spacing:6px;margin:8px 0;text-transform:uppercase}
+.lets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}.lets .mt{width:52px;font-size:22px;font-weight:800;text-transform:uppercase}
+.tile small{display:block;font-weight:400;color:#5F6368;font-size:14px;margin-top:2px}
+#bf button{width:auto;height:46px;border-radius:999px;padding:0 18px 0 14px;display:inline-flex;align-items:center;gap:4px;font:inherit;font-size:16px;font-weight:800;background:#D3E3FD;color:#0B57D0;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+#bf button:last-child{padding:0 14px 0 18px}
+#bf button:disabled{visibility:hidden}
+#bf svg{flex:none}
+html:root:not([data-theme='none']){--ink:#2A1A12;--mute:#7A6A58;--hi:#7A1F2B;--card:#FDF8EC;--line:#E8DABB;--brand:#7A1F2B}
+body{background:linear-gradient(180deg,#E9DCC0 0,#F3EAD8 240px,#F3EAD8 100%) fixed;color:#2A1A12;font-family:Roboto,Nunito,system-ui,sans-serif}
+main{width:calc(100% - 24px);max-width:560px;margin:14px auto 40px;background:#FDF8EC;border:1px solid #E8DABB;border-radius:28px;padding:22px 18px 96px;box-shadow:0 10px 28px rgba(90,60,20,.14),inset 0 0 0 6px #FDF8EC,inset 0 0 0 7px #E8DABB}
+h1,.sech{font-family:'Playfair Display',Georgia,serif;color:#7A1F2B;font-weight:800}h1{font-size:34px;margin:12px 0 2px}
+.sub{color:#7A6A58}.top span:first-child{display:none}.top{justify-content:space-between;margin-bottom:4px}
+.brand{text-align:center;margin-bottom:6px}.brand svg{display:block;margin:0 auto}
+.bt{font-family:'Playfair Display',Georgia,serif;font-size:40px;font-weight:800;color:#7A1F2B;line-height:1.1;margin-top:6px}
+.gold{color:#B8860B;letter-spacing:12px;margin:2px 0}.bu{color:#6B4F3A;font-size:22px}
+.chip,.snd{background:#F2DFD7;color:#7A1F2B;border:0;box-shadow:none}
+.card:nth-of-type(n){background:#FDF8EC;border:1px solid #E8DABB;border-radius:20px;color:#2A1A12}
+.fc{background:#F6EBD3!important;border:1px solid #E8DABB;color:#2A1A12}
+.fc .p{background:#FDF8EC;color:#7A1F2B}.fc .spk,.spk{background:#F2DFD7}
+.go{background:#F2DFD7;color:#7A1F2B;border-radius:16px;font-weight:500}.go.pri{background:#7A1F2B;color:#fff}
+.tile:nth-child(n){background:#FDF8EC;border:1.5px solid #E8DABB;box-shadow:none;border-radius:22px;color:#2A1A12;font-weight:500;font-size:20px;padding:24px 10px}
+.tile:active{border-color:#7A1F2B}.tile small{color:#7A6A58}
+.opt,.mt{background:#FDF8EC;border:1px solid #E8DABB;color:#2A1A12}.opt.ok,.mt.ok{background:#E4EFE0;border-color:#4F7F52}.opt.bad{background:#F6DEDA;border-color:#A33A2E}.mt.sel{background:#F2DFD7;border-color:#7A1F2B}
+.bar,.tl{background:#EADFC8}.bar i,.tl i{background:#7A1F2B}
+.tbar{background:#FDF8EC;border:1px solid #E8DABB;color:#2A1A12}
+.vr,.ch,.sent,.intro{background:#F9F1DF}
+.pr,.ch span,.vr .e i{color:#8C3B2A}.big,.tag{color:#7A1F2B}
+input{background:#F4EAD5;border:1.5px solid #E2D2AE;color:#2A1A12;border-radius:18px}
+#bf button{background:#F2DFD7;color:#7A1F2B;box-shadow:0 2px 8px rgba(90,60,20,.18)}
+.sech{font-size:26px;margin:18px 0 4px}.sdesc{color:#7A6A58;margin:0 0 14px}.ipara{font-size:19px;line-height:1.75}
+.credit{font-size:0;color:#7A6A58;font-family:Georgia,serif}.credit::after{content:'Created by Rabia · © 2026 · All rights reserved';font-size:14px}
+.bu,.sub{display:none}
+h1.ur{font-family:'Noto Nastaliq Urdu',serif;font-weight:600;line-height:1.9}
+main[data-p='home']{padding:10px 14px 14px;margin-top:8px}
+main[data-p='home'] .brand svg{width:110px;height:42px}
+main[data-p='home'] .bt{font-size:28px;margin-top:0}
+main[data-p='home'] .gold{display:none}
+main[data-p='home'] h1{font-size:22px;margin:4px 0 6px}
+main[data-p='home'] .top{margin-bottom:0}
+main[data-p='home'] .card:nth-of-type(n){padding:8px 12px;margin:6px 0}
+main[data-p='home'] .card .ex{display:none}
+main[data-p='home'] .card .en{font-size:16px}
+main[data-p='home'] .big{font-size:20px!important}
+main[data-p='home'] .badges{margin-top:4px;font-size:13px;gap:10px}
+main[data-p='home'] .grid{grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+main[data-p='home'] .tile:nth-child(n){padding:10px 4px;font-size:13px;border-radius:16px;line-height:1.25}
+main[data-p='home'] .tile span{font-size:28px;margin-bottom:2px}
+main[data-p='home'] .credit{margin:10px 0 0}
+.credit~.credit{display:none}
+.credit::after{font-size:11px;opacity:.75;letter-spacing:.2px}.credit{margin-top:14px}
+html:has(main[data-p='home']),body:has(main[data-p='home']){overflow:hidden}
+main[data-p='home']{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100vh - 24px);height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));margin:12px auto;padding:8px 14px 64px;overflow:hidden}
+main[data-p='home'] .brand svg{width:88px;height:34px}
+main[data-p='home'] .bt{font-size:22px}
+main[data-p='home'] h1{font-size:18px;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;flex:none}
+main[data-p='home'] .top{margin:0}
+main[data-p='home'] .snd,main[data-p='home'] .chip{font-size:12px;padding:3px 10px}
+main[data-p='home'] .card:nth-of-type(n){padding:6px 12px;margin:4px 0;flex:none}
+main[data-p='home'] .badges{font-size:11px;margin-top:2px}
+main[data-p='home'] .grid{flex:1;min-height:0;grid-template-rows:repeat(4,minmax(0,1fr));gap:8px;margin-top:4px}
+main[data-p='home'] .tile:nth-child(n){display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:12.5px;min-height:0}
+main[data-p='home'] .tile span{font-size:26px;margin:0 0 2px}
+main[data-p='home'] .credit{margin:6px 0 0;flex:none}
+main[data-p='home'] .tile:nth-child(n){font-size:12px}
+main[data-p='home'] .tile span{font-size:24px}
+main[data-p='home'] .card .en{font-size:14px}
+.tgc{display:flex;align-items:center;gap:14px;width:100%;text-align:start;border:1.5px solid #E8DABB;background:#FDF8EC;color:#2A1A12;border-radius:20px;padding:14px 16px;margin:8px 0;font:inherit}
+.tgc>span{font-size:30px;min-width:38px;text-align:center;color:#7A1F2B;font-weight:800}
+.tgc b{display:block;font-size:18px}.tgc i{display:block;font-style:normal;color:#8C3B2A;font-size:16px;line-height:1.8}.tgc small{display:block;color:#7A6A58;font-size:13px}.tgc:active{border-color:#7A1F2B}
+.exr{display:block;width:100%;text-align:start;border:0;background:#F9F1DF;border-radius:14px;padding:10px 14px;margin:8px 0;color:#2A1A12;font:inherit}.exr b{display:block;font-size:17px}.exr i{display:block;font-style:normal;color:#8C3B2A;font-size:15px;line-height:1.9}.exr span{display:block;color:#5F4B3A;font-size:16px;line-height:1.9}
+main:not([data-p=intro],[data-p=home]){padding:12px 14px 84px}
+main:not([data-p=intro],[data-p=home]) .brand svg{width:90px;height:34px}
+main:not([data-p=intro],[data-p=home]) .bt{font-size:22px;margin-top:0}
+main:not([data-p=intro],[data-p=home]) .gold{display:none}
+main:not([data-p=intro],[data-p=home]) h1{font-size:20px;margin:4px 0 2px}
+main:not([data-p=intro],[data-p=home]) .top{margin:2px 0}
+main:not([data-p=intro],[data-p=home]) .snd,main:not([data-p=intro],[data-p=home]) .chip{font-size:12px;padding:3px 10px}
+main:not([data-p=intro],[data-p=home]) .sech{font-size:18px;margin:10px 0 2px}
+main:not([data-p=intro],[data-p=home]) .sdesc{font-size:13px;margin:0 0 8px}
+main:not([data-p=intro],[data-p=home]) .card:nth-of-type(n){padding:10px 12px;margin:6px 0}
+main:not([data-p=intro],[data-p=home]) .en{font-size:17px}
+main:not([data-p=intro],[data-p=home]) .pr,main:not([data-p=intro],[data-p=home]) .mean{font-size:15px}
+main:not([data-p=intro],[data-p=home]) .ex{font-size:13px}
+main:not([data-p=intro],[data-p=home]) .tag{font-size:15px;margin-top:10px}
+main:not([data-p=intro],[data-p=home]) .fc{padding:14px 12px;margin:10px 0}
+main:not([data-p=intro],[data-p=home]) .fc .w{font-size:30px}
+main:not([data-p=intro],[data-p=home]) .fc .emo{font-size:52px}
+main:not([data-p=intro],[data-p=home]) .fc .p,main:not([data-p=intro],[data-p=home]) .fc .m{font-size:19px}
+main:not([data-p=intro],[data-p=home]) .tile:nth-child(n){font-size:15px;padding:12px 6px}
+main:not([data-p=intro],[data-p=home]) .tile span{font-size:30px;margin-bottom:2px}
+main:not([data-p=intro],[data-p=home]) .tile small{font-size:12px}
+main:not([data-p=intro],[data-p=home]) .tgc{padding:10px 12px;margin:6px 0;gap:12px}
+main:not([data-p=intro],[data-p=home]) .tgc b{font-size:16px}
+main:not([data-p=intro],[data-p=home]) .tgc i{font-size:14px}
+main:not([data-p=intro],[data-p=home]) .tgc>span{font-size:24px;min-width:30px}
+main:not([data-p=intro],[data-p=home]) .go{font-size:14px;padding:9px 14px}
+main:not([data-p=intro],[data-p=home]) .opt{font-size:17px;padding:10px 14px;margin:6px 0}
+main:not([data-p=intro],[data-p=home]) .vr .e b{font-size:16px}
+main:not([data-p=intro],[data-p=home]) .vr .e i{font-size:14px}
+main:not([data-p=intro],[data-p=home]) .vr .u{font-size:15px}
+main:not([data-p=intro],[data-p=home]) .exr b{font-size:15px}
+main:not([data-p=intro],[data-p=home]) .exr i,main:not([data-p=intro],[data-p=home]) .exr span{font-size:14px}
+main:not([data-p=intro],[data-p=home]) .slots{font-size:26px}
+main:not([data-p=intro],[data-p=home]) .bar{height:8px}
+main[data-p='home'] .grid .tile:last-child{grid-column:2}
+.micb{width:96px;height:96px;border-radius:50%;border:0;background:#7A1F2B;color:#fff;font-size:42px;box-shadow:0 6px 16px rgba(122,31,43,.35)}.micb:active{transform:scale(.96)}
+main[data-p='home'] .grid{grid-template-rows:repeat(3,minmax(0,1fr))}
+main[data-p='home'] .grid .tile:last-child{grid-column:auto}
+.srtop{display:flex;justify-content:center;padding:8px 0 16px}
+.micc{width:68px;height:68px;border-radius:50%;border:1.5px solid #B8860B;background:#FDF8EC;color:#7A1F2B;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px #FDF8EC,0 0 0 6.5px #E8DABB,0 6px 14px rgba(90,60,20,.2)}
+.micc.on{background:#7A1F2B;color:#fff;border-color:#7A1F2B;animation:mp 1.6s ease-out infinite}
+@keyframes mp{0%{box-shadow:0 0 0 5px #FDF8EC,0 0 0 6.5px #E8DABB,0 0 0 6px rgba(122,31,43,.35)}100%{box-shadow:0 0 0 5px #FDF8EC,0 0 0 6.5px #E8DABB,0 0 0 24px rgba(122,31,43,0)}}
+.srl{font-size:18px;line-height:1.7;margin:8px 4px;color:#2A1A12}
+.srn{font-size:14px;color:#7A6A58;text-align:center}
+.srb{margin:12px 4px}.sru{font-size:16px;color:#8C3B2A;line-height:1.9}.srb .srl{margin:2px 0}.srn.ur{direction:rtl;font-size:16px}.sin{width:100%;margin-top:10px}
+.mgw{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:56px;touch-action:none;user-select:none;-webkit-user-select:none;margin-top:6px}
+.mgs{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.mgc{display:grid;gap:12px;align-content:start}
+.mt2{position:relative;border:1px solid #E8DABB;background:#FDF8EC;border-radius:16px;padding:13px 8px;font-size:17px;text-align:center;color:#2A1A12;touch-action:none;cursor:grab}
+.mt2.ok{background:#E4EFE0;border-color:#4F7F52}.mt2.bad{background:#F6DEDA;border-color:#A33A2E}
+.mt2[data-s=e]::after,.mt2[data-s=u]::before{content:'';position:absolute;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:#7A1F2B}
+.mt2[data-s=e]::after{right:-6px}.mt2[data-s=u]::before{left:-6px}.mt2.ok::after,.mt2.ok::before{background:#4F7F52}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav id="nav" role="tablist"></nav>
+<script>
+const W=[
+["Wake up","ویک اَپ","اٹھنا / جاگنا","I wake up at six."],
+["Breakfast","بریک فاسٹ","ناشتہ","We eat breakfast together."],
+["Hurry","ہَری","جلدی کرنا","Hurry, the bus is here!"],
+["Tired","ٹائرڈ","تھکا ہوا","I am tired today."],
+["Schedule","شیڈیول","وقت کا نظام","My schedule is busy."],
+["Market","مارکیٹ","بازار","I go to the market."],
+["Friend","فرینڈ","دوست","He is my friend."],
+["Hungry","ہَنگری","بھوکا","The child is hungry."],
+["Late","لیٹ","دیر سے","Sorry, I am late."],
+["Help","ہیلپ","مدد","Can you help me?"],
+["Water","واٹر","پانی","Please give me water."],
+["Morning","مارننگ","صبح","Good morning!"],
+["Good night","گڈ نائٹ","شب بخیر"],["Thank you","تھینک یو","شکریہ"],["Please","پلیز","مہربانی"],["Sorry","سوری","معذرت"],["Welcome","ویلکم","خوش آمدید"],["Yes","یَس","ہاں"],["No","نو","نہیں"],["Name","نیم","نام"],["Family","فیملی","خاندان"],["Mother","مَدر","ماں"],["Father","فادر","باپ"],["Brother","بَرَدر","بھائی"],["Sister","سسٹر","بہن"],["Son","سَن","بیٹا"],["Daughter","ڈاٹر","بیٹی"],["House","ہاؤس","گھر"],["Door","ڈور","دروازہ"],["Window","وِنڈو","کھڑکی"],["Room","روم","کمرہ"],["Kitchen","کِچن","باورچی خانہ"],["Table","ٹیبل","میز"],["Chair","چیئر","کرسی"],["Bed","بیڈ","بستر"],["Book","بُک","کتاب"],["Pen","پین","قلم"],["School","اسکول","مدرسہ"],["Teacher","ٹیچر","استاد"],["Student","اسٹوڈنٹ","طالب علم"],["Lesson","لیسن","سبق"],["Question","کویسچن","سوال"],["Answer","آنسر","جواب"],
+["Read","ریڈ","پڑھنا"],["Write","رائٹ","لکھنا"],["Speak","اسپیک","بولنا"],["Listen","لِسن","سننا"],["Eat","ایٹ","کھانا"],["Drink","ڈرنک","پینا"],["Sleep","سلیپ","سونا"],["Walk","واک","چلنا"],["Run","رَن","دوڑنا"],["Sit","سِٹ","بیٹھنا"],["Stand","اسٹینڈ","کھڑا ہونا"],["Come","کَم","آنا"],["Go","گو","جانا"],["Give","گِو","دینا"],["Take","ٹیک","لینا"],["Buy","بائے","خریدنا"],["Sell","سیل","بیچنا"],["Open","اوپن","کھولنا"],["Close","کلوز","بند کرنا"],["Learn","لَرن","سیکھنا"],["Think","تھنک","سوچنا"],["Know","نو","جاننا"],
+["Love","لَو","محبت"],["Happy","ہَیپی","خوش"],["Sad","سیڈ","اداس"],["Angry","اینگری","ناراض"],["Big","بِگ","بڑا"],["Small","اسمال","چھوٹا"],["Hot","ہاٹ","گرم"],["Cold","کولڈ","ٹھنڈا"],["New","نیو","نیا"],["Old","اولڈ","پرانا"],["Good","گُڈ","اچھا"],["Bad","بیڈ","برا"],["Fast","فاسٹ","تیز"],["Slow","سلو","آہستہ"],["Easy","ایزی","آسان"],["Difficult","ڈِفیکلٹ","مشکل"],["Beautiful","بیوٹیفل","خوبصورت"],["Clean","کلین","صاف"],
+["Red","ریڈ","سرخ"],["Blue","بلو","نیلا"],["Green","گرین","سبز"],["White","وائٹ","سفید"],["Black","بلیک","کالا"],["One","وَن","ایک"],["Two","ٹو","دو"],["Three","تھری","تین"],["Ten","ٹین","دس"],["Today","ٹوڈے","آج"],["Tomorrow","ٹومارو","آنے والا کل"],["Yesterday","یسٹرڈے","گزرا ہوا کل"],["Week","ویک","ہفتہ"],["Month","منتھ","مہینہ"],["Year","یئر","سال"],["Time","ٹائم","وقت"],["Night","نائٹ","رات"],
+["Bread","بریڈ","روٹی"],["Rice","رائس","چاول"],["Milk","مِلک","دودھ"],["Tea","ٹی","چائے"],["Money","مَنی","پیسہ"],["Phone","فون","موبائل"],["Car","کار","گاڑی"],["Road","روڈ","سڑک"],["City","سِٹی","شہر"],["Country","کَنٹری","ملک"],["Doctor","ڈاکٹر","معالج"],["Hospital","ہاسپٹل","ہسپتال"],["Work","ورک","کام"],["Office","آفس","دفتر"],
+["Apple","ایپل","سیب"],["Banana","بنانا","کیلا"],["Mango","مینگو","آم"],["Orange","اورنج","مالٹا"],["Egg","ایگ","انڈا"],["Meat","میٹ","گوشت"],["Chicken","چکن","مرغی"],["Fish","فِش","مچھلی"],["Vegetable","ویجیٹیبل","سبزی"],["Potato","پوٹیٹو","آلو"],["Onion","اَنیَن","پیاز"],["Tomato","ٹماٹو","ٹماٹر"],["Salt","سالٹ","نمک"],["Sugar","شُگر","چینی"],["Butter","بَٹر","مکھن"],["Juice","جوس","رس"],["Food","فوڈ","کھانا"],["Dinner","ڈِنر","رات کا کھانا"],["Lunch","لَنچ","دوپہر کا کھانا"],
+["Head","ہیڈ","سر"],["Eye","آئی","آنکھ"],["Ear","ایئر","کان"],["Nose","نوز","ناک"],["Mouth","ماؤتھ","منہ"],["Hand","ہینڈ","ہاتھ"],["Leg","لیگ","ٹانگ"],["Heart","ہارٹ","دل"],["Face","فیس","چہرہ"],["Hair","ہیئر","بال"],["Tooth","ٹوتھ","دانت"],["Finger","فِنگر","انگلی"],["Foot","فُٹ","پاؤں"],
+["Bus","بَس","بس"],["Train","ٹرین","ریل گاڑی"],["Plane","پلین","ہوائی جہاز"],["Ticket","ٹکٹ","ٹکٹ"],["Airport","ایئرپورٹ","ہوائی اڈہ"],["Station","اسٹیشن","اسٹیشن"],["Journey","جرنی","سفر"],["Map","میپ","نقشہ"],["Street","اسٹریٹ","گلی"],["Bridge","برج","پل"],["Passport","پاس پورٹ","پاسپورٹ"],["Hotel","ہوٹل","ہوٹل"],["Luggage","لَگیج","سامان"],["Left","لیفٹ","بایاں"],["Right","رائٹ","دایاں"],["Near","نیئر","قریب"],["Far","فار","دور"],
+["Sun","سَن","سورج"],["Moon","مون","چاند"],["Star","اسٹار","ستارہ"],["Sky","اسکائی","آسمان"],["Rain","رین","بارش"],["Wind","وِنڈ","ہوا"],["Snow","اسنو","برف"],["Cloud","کلاؤڈ","بادل"],["River","رِوَر","دریا"],["Mountain","ماؤنٹن","پہاڑ"],["Tree","ٹری","درخت"],["Flower","فلاور","پھول"],["Garden","گارڈن","باغ"],["Sea","سی","سمندر"],["Fire","فائر","آگ"],["Earth","ارتھ","زمین"],
+["Dog","ڈاگ","کتا"],["Cat","کیٹ","بلی"],["Horse","ہارس","گھوڑا"],["Cow","کاؤ","گائے"],["Bird","برڈ","پرندہ"],["Lion","لائن","شیر"],["Goat","گوٹ","بکری"],
+["Boss","باس","افسر"],["Job","جاب","نوکری"],["Meeting","میٹنگ","ملاقات / اجلاس"],["Salary","سیلری","تنخواہ"],["Customer","کسٹمر","گاہک"],["Shop","شاپ","دکان"],["Price","پرائس","قیمت"],["Cheap","چیپ","سستا"],["Expensive","ایکسپینسِو","مہنگا"],["Gift","گفٹ","تحفہ"],["Neighbor","نیبر","پڑوسی"],["Guest","گیسٹ","مہمان"],["Child","چائلڈ","بچہ"],["Man","مین","آدمی"],["Woman","وُمن","عورت"],["Boy","بوائے","لڑکا"],["Girl","گرل","لڑکی"],
+["Want","وانٹ","چاہنا"],["Need","نیڈ","ضرورت"],["Like","لائک","پسند کرنا"],["Wait","ویٹ","انتظار کرنا"],["Call","کال","بلانا / فون کرنا"],["Ask","آسک","پوچھنا"],["Tell","ٹیل","بتانا"],["Show","شو","دکھانا"],["Find","فائنڈ","ڈھونڈنا"],["Start","اسٹارٹ","شروع کرنا"],["Finish","فِنِش","ختم کرنا"],["Play","پلے","کھیلنا"],["Sing","سِنگ","گانا"],["Laugh","لاف","ہنسنا"],["Cry","کرائی","رونا"],["Cook","کُک","پکانا"],["Wash","واش","دھونا"],["Wear","ویئر","پہننا"],["Bring","برنگ","لانا"],["Send","سینڈ","بھیجنا"],["Win","وِن","جیتنا"],["Lose","لوز","ہارنا"],["Forget","فرگیٹ","بھولنا"],["Remember","رِیمَیمبر","یاد رکھنا"],["Understand","اَنڈرسٹینڈ","سمجھنا"],["Try","ٹرائی","کوشش کرنا"],["Meet","میٹ","ملنا"],["Stay","اسٹے","ٹھہرنا"],["Pay","پے","ادا کرنا"],
+["Strong","اسٹرانگ","مضبوط"],["Weak","ویک","کمزور"],["Rich","رِچ","امیر"],["Poor","پور","غریب"],["Young","یَنگ","جوان"],["Long","لانگ","لمبا"],["Short","شارٹ","مختص / کم قد"],["Heavy","ہیوی","بھاری"],["Light","لائٹ","ہلکا"],["Full","فُل","بھرا ہوا"],["Empty","ایمپٹی","خالی"],["Dirty","ڈرٹی","گندا"],["Safe","سیف","محفوظ"],["Important","اِمپورٹنٹ","اہم"],["Ready","ریڈی","تیار"],["Busy","بِزی","مصروف"],["Free","فری","آزاد / مفت"],["Sick","سِک","بیمار"],["Healthy","ہیلتھی","صحت مند"],["Sweet","سوئیٹ","میٹھا"],["Quiet","کوائٹ","خاموش"],["Loud","لاؤڈ","تیز آواز"],["Dark","ڈارک","اندھیرا"],["Bright","برائٹ","روشن"],["Wrong","رانگ","غلط"],["Correct","کریکٹ","درست"],["True","ٹرو","سچ"],["Same","سیم","ایک جیسا"],
+["Always","آلویز","ہمیشہ"],["Never","نیور","کبھی نہیں"],["Sometimes","سَم ٹائمز","کبھی کبھی"],["Now","ناؤ","اب"],["Soon","سون","جلد"],["Before","بِفور","پہلے"],["After","آفٹر","بعد میں"],["Here","ہِیر","یہاں"],["There","دیئر","وہاں"],["Because","بِکاز","کیونکہ"],["With","وِد","ساتھ"],["Without","وِدآؤٹ","کے بغیر"],["Many","مینی","بہت سے"],["All","آل","سب"],["Every","ایوری","ہر"],["Again","اگین","دوبارہ"],["Very","ویری","بہت"],["Also","آلسو","بھی"],["Only","اونلی","صرف"],
+["Monday","منڈے","پیر"],["Friday","فرائیڈے","جمعہ"],["Sunday","سنڈے","اتوار"],["Five","فائیو","پانچ"],["Hundred","ہَنڈرڈ","سو"],["Thousand","تھاؤزنڈ","ہزار"],["First","فرسٹ","پہلا"],["Zero","زیرو","صفر"],
+["Shirt","شرٹ","قمیض"],["Trousers","ٹراؤزرز","پتلون"],["Shoes","شوز","جوتے"],["Socks","ساکس","موزے"],["Hat","ہیٹ","ٹوپی"],["Dress","ڈریس","لباس"],["Glasses","گلاسز","عینک"],["Bag","بیگ","تھیلا"],["Watch","واچ","گھڑی"],["Umbrella","اَمبریلا","چھتری"],["Pocket","پاکٹ","جیب"],["Ring","رنگ","انگوٹھی"],
+["Key","کی","چابی"],["Lock","لاک","تالا"],["Lamp","لیمپ","چراغ"],["Mirror","مِرَر","آئینہ"],["Clock","کلاک","دیوار گھڑی"],["Cup","کپ","پیالہ"],["Plate","پلیٹ","تھالی"],["Spoon","اسپون","چمچ"],["Knife","نائف","چھری"],["Fork","فورک","کانٹا"],["Bottle","بَٹل","بوتل"],["Bucket","بَکٹ","بالٹی"],["Broom","بروم","جھاڑو"],["Blanket","بلینکٹ","کمبل"],["Pillow","پِلو","تکیہ"],["Carpet","کارپٹ","قالین"],["Wall","وال","دیوار"],["Roof","روف","چھت"],["Floor","فلور","فرش"],["Stairs","اسٹیئرز","سیڑھیاں"],["Fan","فین","پنکھا"],["Towel","ٹاول","تولیہ"],["Soap","سوپ","صابن"],["Comb","کومب","کنگھی"],
+["Engineer","انجینئر","انجینئر"],["Farmer","فارمر","کسان"],["Driver","ڈرائیور","ڈرائیور"],["Lawyer","لاءیر","وکیل"],["Police","پولیس","پولیس"],["Soldier","سولجر","سپاہی"],["Nurse","نرس","نرس"],["Chef","شیف","باورچی"],["Tailor","ٹیلر","درزی"],["Pilot","پائلٹ","پائلٹ"],["Artist","آرٹسٹ","فنکار"],["Singer","سنگر","گلوکار"],["Writer","رائٹر","مصنف"],["Judge","جَج","جج"],
+["Mosque","ماسک","مسجد"],["Park","پارک","پارک"],["Bank","بینک","بینک"],["Library","لائبریری","کتب خانہ"],["Museum","میوزیم","عجائب گھر"],["Village","وِلیج","گاؤں"],["Beach","بیچ","ساحل"],["Desert","ڈیزرٹ","صحرا"],["Forest","فاریسٹ","جنگل"],["Island","آئی لینڈ","جزیرہ"],["Lake","لیک","جھیل"],["Restaurant","ریسٹورنٹ","ریستوران"],["Pharmacy","فارمیسی","دوا خانہ"],["Farm","فارم","کھیت"],
+["Medicine","میڈیسن","دوا"],["Fever","فیور","بخار"],["Pain","پین","درد"],["Cough","کاف","کھانسی"],["Health","ہیلتھ","صحت"],["Injury","اِنجری","چوٹ"],["Blood","بلڈ","خون"],["Bone","بون","ہڈی"],["Skin","اسکن","جلد"],["Stomach","اسٹَمَک","پیٹ"],["Shoulder","شولڈر","کندھا"],["Neck","نیک","گردن"],
+["Computer","کمپیوٹر","کمپیوٹر"],["Internet","انٹرنیٹ","انٹرنیٹ"],["Screen","اسکرین","پردہ"],["Message","میسج","پیغام"],["Email","ای میل","برقی خط"],["Password","پاس ورڈ","خفیہ لفظ"],["Photo","فوٹو","تصویر"],["Music","میوزک","موسیقی"],["Game","گیم","کھیل"],["Exam","ایگزام","امتحان"],["Page","پیج","صفحہ"],["Letter","لیٹر","خط"],["Word","ورڈ","لفظ"],["Sentence","سینٹینس","جملہ"],["Story","اسٹوری","کہانی"],["Dictionary","ڈکشنری","لغت"],["Class","کلاس","جماعت"],["Paper","پیپر","کاغذ"],["Pencil","پینسل","پنسل"],
+["Afraid","اَفریڈ","ڈرا ہوا"],["Brave","بریو","بہادر"],["Proud","پراؤڈ","فخر والا"],["Shy","شائی","شرمیلا"],["Lonely","لونلی","تنہا"],["Excited","ایکسائٹڈ","پرجوش"],["Worried","وَرِڈ","پریشان"],["Surprised","سرپرائزڈ","حیران"],["Kind","کائنڈ","مہربان"],["Rude","روڈ","بدتمیز"],["Polite","پولائٹ","مہذب"],["Honest","آنسٹ","ایماندار"],["Lazy","لیزی","سست"],["Clever","کلیور","ہوشیار"],["Funny","فنی","مزاحیہ"],["Famous","فیمس","مشہور"],["Different","ڈِفرنٹ","مختلف"],["Possible","پاسیبل","ممکن"],
+["Jump","جَمپ","کودنا"],["Fly","فلائی","اڑنا"],["Swim","سوئم","تیرنا"],["Climb","کلائم","چڑھنا"],["Fall","فال","گرنا"],["Push","پُش","دھکیلنا"],["Pull","پُل","کھینچنا"],["Throw","تھرو","پھینکنا"],["Catch","کیچ","پکڑنا"],["Hold","ہولڈ","تھامنا"],["Cut","کَٹ","کاٹنا"],["Break","بریک","توڑنا"],["Build","بِلڈ","بنانا"],["Fix","فِکس","مرمت کرنا"],["Draw","ڈرا","تصویر بنانا"],["Paint","پینٹ","رنگنا"],["Dance","ڈانس","ناچنا"],["Travel","ٹریول","سفر کرنا"],["Visit","وِزِٹ","ملنے جانا"],["Invite","اِنوائٹ","دعوت دینا"],["Agree","اَگری","متفق ہونا"],["Choose","چوز","چننا"],["Decide","ڈِسائیڈ","فیصلہ کرنا"],["Change","چینج","بدلنا"],["Keep","کیپ","رکھنا"],["Borrow","بارو","ادھار لینا"],["Return","رِٹرن","واپس آنا"],["Arrive","اَرائیو","پہنچنا"],["Leave","لِیو","روانہ ہونا"],["Enter","اینٹر","داخل ہونا"],["Hope","ہوپ","امید"],["Believe","بِلیو","یقین کرنا"],["See","سی","دیکھنا"],["Smell","اسمیل","سونگھنا"],["Taste","ٹیسٹ","چکھنا"],["Touch","ٹچ","چھونا"],["Smile","اسمائل","مسکرانا"],["Shout","شاؤٹ","چیخنا"],
+["Hour","آور","گھنٹہ"],["Minute","منٹ","منٹ"],["Noon","نون","دوپہر"],["Evening","ایوننگ","شام"],["Midnight","مڈ نائٹ","آدھی رات"],["Holiday","ہالیڈے","چھٹی"],["Birthday","برتھ ڈے","سالگرہ"],["Season","سیزن","موسم"],["Summer","سَمَر","گرمی کا موسم"],["Winter","وِنٹر","سردی کا موسم"],["Spring","اسپرنگ","بہار"],["Autumn","آٹم","خزاں"],["Tuesday","ٹیوز ڈے","منگل"],["Wednesday","وینزڈے","بدھ"],["Thursday","تھرزڈے","جمعرات"],["Saturday","سیٹرڈے","ہفتہ (دن)"],["Four","فور","چار"],["Six","سِکس","چھ"],["Seven","سیون","سات"],["Eight","ایٹ","آٹھ"],["Nine","نائن","نو"],["Twenty","ٹوئنٹی","بیس"],["Fifty","فِفٹی","پچاس"],["Half","ہاف","آدھا"],["Last","لاسٹ","آخری"],["Next","نیکسٹ","اگلا"],
+["Between","بِٹوین","درمیان"],["Behind","بِہائنڈ","پیچھے"],["Front","فرنٹ","سامنے"],["Inside","اِن سائیڈ","اندر"],["Outside","آؤٹ سائیڈ","باہر"],["Above","اَبَو","اوپر"],["Below","بِلو","نیچے"],["Around","اَراؤنڈ","ارد گرد"],["Maybe","میبی","شاید"],["Together","ٹُگیدر","اکٹھے"],["Alone","اَلون","اکیلا"],["Everyone","ایوری ون","ہر کوئی"],["Nobody","نوبَڈی","کوئی نہیں"],["Something","سَم تھنگ","کوئی چیز"],["Nothing","نَتھنگ","کچھ نہیں"],["Where","وئیر","کہاں"],["When","وین","کب"],["Why","وائے","کیوں"],["How","ہاؤ","کیسے"],["Who","ہو","کون"],["What","واٹ","کیا"],["Which","وِچ","کون سا"],
+["Cheese","چیز","پنیر"],["Honey","ہَنی","شہد"],["Soup","سوپ","شوربہ"],["Salad","سیلَڈ","سلاد"],["Cake","کیک","کیک"],["Biscuit","بِسکٹ","بسکٹ"],["Chocolate","چاکلیٹ","چاکلیٹ"],["Lemon","لیمن","لیموں"],["Grapes","گریپس","انگور"],["Pepper","پیپر","کالی مرچ"],["Oil","آئل","تیل"],["Flour","فلاور","آٹا"],["Fruit","فروٹ","پھل"],["Lentils","لینٹلز","دال"],["Yogurt","یوگرٹ","دہی"],["Curry","کَری","سالن"],
+["Life","لائف","زندگی"],["Dream","ڈریم","خواب"],["Peace","پیس","امن"],["War","وار","جنگ"],["Freedom","فریڈم","آزادی"],["Truth","ٹروتھ","سچائی"],["Idea","آئیڈیا","خیال"],["Problem","پرابلم","مسئلہ"],["Solution","سولیوشن","حل"],["Reason","ریزن","وجہ"],["Fear","فیئر","خوف"],["Luck","لَک","قسمت"],["Power","پاور","طاقت"],["Voice","وائس","آواز"],["Noise","نوائز","شور"],["Colour","کَلَر","رنگ"],["Shape","شیپ","شکل"],["Weight","ویٹ","وزن"],["Number","نمبر","عدد"],["Team","ٹیم","ٹیم"],["Party","پارٹی","دعوت"],["Wedding","ویڈنگ","شادی"],["Festival","فیسٹیول","تہوار"],["Prayer","پریئر","دعا"]];
+const P=[
+["Noun","نَاؤن","اسم","Ali, book, Lahore"],
+["Pronoun","پرونَاؤن","ضمیر","he, she, they"],
+["Verb","وَرب","فعل","eat, run, is"],
+["Adjective","ایجَکٹِو","صفت","big, red, smart"],
+["Adverb","ایڈوَرب","متعلقِ فعل","quickly, always"],
+["Preposition","پریپوزِیشن","حرفِ جار","in, on, under"],
+["Conjunction","کنجَنکشن","حرفِ عطف","and, but, because"],
+["Interjection","اِنٹرجَیکشن","فجائیہ","Wow! Oh!"]];
+const T=[
+["Present · حال",[
+["Simple","I eat","آئی ایٹ","میں کھاتا ہوں"],
+["Continuous","I am eating","آئی ایم ایٹنگ","میں کھا رہا ہوں"],
+["Perfect","I have eaten","آئی ہیو ایٹن","میں کھا چکا ہوں"],
+["Perfect Continuous","I have been eating","آئی ہیو بِین ایٹنگ","میں کافی دیر سے کھا رہا ہوں"]]],
+["Past · ماضی",[
+["Simple","I ate","آئی ایٹ","میں نے کھایا"],
+["Continuous","I was eating","آئی وَز ایٹنگ","میں کھا رہا تھا"],
+["Perfect","I had eaten","آئی ہیڈ ایٹن","میں کھا چکا تھا"],
+["Perfect Continuous","I had been eating","آئی ہیڈ بِین ایٹنگ","میں کافی دیر سے کھا رہا تھا"]]],
+["Future · مستقبل",[
+["Simple","I will eat","آئی وِل ایٹ","میں کھاؤں گا"],
+["Continuous","I will be eating","آئی وِل بی ایٹنگ","میں کھا رہا ہوں گا"],
+["Perfect","I will have eaten","آئی وِل ہیو ایٹن","میں کھا چکا ہوں گا"],
+["Perfect Continuous","I will have been eating","آئی وِل ہیو بِین ایٹنگ","میں کافی دیر سے کھا رہا ہوں گا"]]]];
+
+const app=document.getElementById('app'),nav=document.getElementById('nav');
+const tabs=[['home','🏠','Home'],['words','📖','Learn'],['vocab','📚','Vocab'],['parts','🧩','Parts'],['tenses','⏳','Tenses'],['quiz','✅','Quiz'],['tests','📝','Tests'],['board','🏆','Board']];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+const spk=t=>`<button class="spk" aria-label="Listen to ${esc(t)}" data-say="${esc(t)}">🔊</button>`;
+const head=(t,u)=>`${BRAND}<div class="top"><span>📚 WordShelf</span><button class='snd' data-snd='1'>${snd?'🔊 On':'🔇 Off'}</button><span class="chip">⭐ ${ST.stars}</span></div><h1>${t}</h1><p class="sub ur" lang="ur">${u}</p>`;
+
+function words(){return head("Daily words","روزمرہ کے انگلش الفاظ")+W.map(w=>`<div class="card"><div class="row"><div><div class="en">${w[0]}</div><div class="pr ur" lang="ur">${w[1]}</div><div class="mean ur" lang="ur">${w[2]}</div></div>${spk(w[0])}</div><div class="ex row"><span>${w[3]}</span>${spk(w[3])}</div></div>`).join("")}
+function parts(){return head("Parts of speech","اقسامِ کلام")+P.map(p=>`<div class="card"><div class="row"><div><div class="en">${p[0]}</div><div class="pr ur" lang="ur">${p[1]} · ${p[2]}</div><div class="ex">${p[3]}</div></div>${spk(p[0])}</div></div>`).join("")}
+function tenses(){return head("Tenses","زمانے")+T.map(g=>`<div class="tag ur" lang="ur">${g[0]}</div>`+g[1].map(t=>`<div class="card"><div class="row"><div><div class="ex">${t[0]}</div><div class="en">${t[1]}</div><div class="pr ur" lang="ur">${t[2]}</div><div class="mean ur" lang="ur">${t[3]}</div></div>${spk(t[1])}</div></div>`).join("")).join("")}
+
+let Q=null;
+function newQuiz(){const s=[...W].sort(()=>Math.random()-.5).slice(0,5);Q={i:0,score:0,done:false,items:s.map(w=>{const o=[...W.filter(x=>x!==w)].sort(()=>Math.random()-.5).slice(0,3).map(x=>x[2]);o.push(w[2]);return{w,o:o.sort(()=>Math.random()-.5)}})}}
+function quiz(){
+ if(!Q)newQuiz();
+ if(Q.i>=Q.items.length)return head("Quiz","آزمائش")+`<div class="card"><div class="big">${Q.score}/${Q.items.length}</div><p>${Q.score>=4?"Great work! شاباش!":"Good start. Review the words and try again."}</p><button class="go" data-act="again">Try again</button></div>`;
+ const it=Q.items[Q.i];
+ return head("Quiz","آزمائش")+`<div class="bar"><i style="width:${Q.i/Q.items.length*100}%"></i></div><div class="card"><div class="row"><div><div class="ex">Question ${Q.i+1} of ${Q.items.length}</div><div class="en">${it.w[0]}</div><div class="pr ur" lang="ur">${it.w[1]}</div></div>${spk(it.w[0])}</div></div>`+it.o.map(o=>`<button class="opt ur" lang="ur" data-ans="${o}">${o}</button>`).join("");
+}
+let wi=0,auto=false,tm=null;
+function sayQ(a){try{speechSynthesis.cancel();a.filter(Boolean).forEach(t=>{const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u)})}catch(e){}}
+function wordsCard(){const w=W[wi];return head("Daily words","روزمرہ کے انگلش الفاظ")+`<div class="bar"><i style="width:${(wi+1)/W.length*100}%"></i></div><div class="card" style="text-align:center;padding:28px 16px"><div class="ex">${wi+1} / ${W.length}</div><div class="en" style="font-size:36px">${w[0]}</div><div class="pr ur" lang="ur" style="font-size:24px">${w[1]}</div><div class="mean ur" lang="ur" style="font-size:22px">${w[2]}</div>${w[3]?`<div class="ex">${w[3]}</div>`:""}<button class="spk" style="margin-top:14px" aria-label="Listen again" data-say="${esc(w[0])}">🔊</button></div><div class="row"><button class="go" data-w="-1">◀ Back</button><button class="go" data-w="auto">${auto?"⏸ Stop":"▶ Auto-play"}</button><button class="go" data-w="1">Next ▶</button></div>`}
+function wAct(a){if(a==='auto'){auto=!auto;clearInterval(tm);if(auto)tm=setInterval(()=>{wi=(wi+1)%W.length;render()},6000);render();return}wi=(wi+W.length+ +a)%W.length;render()}
+function autoSpeak(){if(cur!=='words'&&auto){auto=false;clearInterval(tm)}if(cur==='words')sayQ([W[wi][0],W[wi][3]]);else if(cur==='quiz'&&Q&&Q.i<Q.items.length)sayQ([Q.items[Q.i].w[0]])}
+const seen=new Set(),G=["#FFE9A8,#FFD1DC","#CDEBFF,#D9D4FF","#FFD9C2,#FFC7D1","#C8F2E0,#CDEBFF","#E3D6FF,#C9F0FF"];
+function wordsCard2(){const w=W[wi];seen.add(wi);return head("Daily words","روزمرہ کے انگلش الفاظ")+`<div class="bar"><i style="width:${(wi+1)/W.length*100}%"></i></div><div class="fc" style="background:linear-gradient(160deg,${G[wi%5]})"><div class="e">Word ${wi+1} of ${W.length}</div><div class="w">${w[0]}</div><div class="p ur" lang="ur">${w[1]}</div><div class="m ur" lang="ur">${w[2]}</div>${w[3]?`<div class="e">“${w[3]}”</div>`:""}<button class="spk" style="margin-top:14px" aria-label="Listen again" data-say="${esc(w[0])}">🔊</button></div><div class="row"><button class="go" data-w="-1">◀ Back</button><button class="go" data-w="auto">${auto?"⏸ Stop":"▶ Auto"}</button><button class="go" data-w="1">Next ▶</button></div>`}
+const PX=[
+["Noun","نَاؤن","اسم","کسی شخص، جگہ، چیز یا جانور کا نام۔ خاص نام (Ali) اور عام نام (boy) دونوں Noun ہیں۔","Ali|علی;Lahore|لاہور;book|بُک;cat|کیٹ;water|واٹر;happiness|ہَیپی نَس","The cat drinks water.","دی کیٹ ڈرنکس واٹر","بلی پانی پیتی ہے۔"],
+["Pronoun","پرونَاؤن","ضمیر","اسم کی جگہ استعمال ہونے والا لفظ، تاکہ بار بار نام نہ دہرانا پڑے۔","I|آئی;you|یو;he|ہی;she|شی;it|اِٹ;we|وی;they|دے","She is my friend.","شی اِز مائی فرینڈ","وہ میری دوست ہے۔"],
+["Verb","وَرب","فعل","کام کرنا یا ہونا ظاہر کرنے والا لفظ۔ ہر جملے میں کم از کم ایک Verb ضرور ہوتا ہے۔","eat|ایٹ;run|رَن;write|رائٹ;sleep|سلیپ;is|اِز;have|ہیو","I write a letter.","آئی رائٹ اے لیٹر","میں خط لکھتا ہوں۔"],
+["Adjective","ایجَکٹِو","صفت","اسم کی خوبی یا حالت بتانے والا لفظ (کیسا؟ کتنا؟)۔","big|بِگ;red|ریڈ;smart|سمارٹ;tall|ٹال;sweet|سوئیٹ;cold|کولڈ","She wears a red dress.","شی ویئرز اے ریڈ ڈریس","وہ سرخ لباس پہنتی ہے۔"],
+["Adverb","ایڈوَرب","متعلقِ فعل","فعل، صفت یا دوسرے Adverb کی کیفیت بتاتا ہے: کیسے؟ کب؟ کہاں؟","quickly|کوِکلی;slowly|سلولی;always|آلویز;very|ویری;here|ہِیر;today|ٹوڈے","He runs quickly.","ہی رَنز کوِکلی","وہ تیز دوڑتا ہے۔"],
+["Preposition","پریپوزِیشن","حرفِ جار","اسم یا ضمیر کا دوسرے لفظ سے تعلق بتاتا ہے (جگہ، وقت، سمت)۔","in|اِن;on|آن;under|اَنڈر;at|ایٹ;with|وِد;from|فرام;to|ٹو","The book is on the table.","دی بُک اِز آن دی ٹیبل","کتاب میز پر ہے۔"],
+["Conjunction","کنجَنکشن","حرفِ عطف","الفاظ یا جملوں کو آپس میں جوڑتا ہے۔","and|اینڈ;but|بَٹ;or|آر;because|بِکاز;so|سو;if|اِف","I am tired but happy.","آئی ایم ٹائرڈ بَٹ ہَیپی","میں تھکا ہوا ہوں مگر خوش ہوں۔"],
+["Interjection","اِنٹرجَیکشن","فجائیہ","اچانک جذبہ ظاہر کرتا ہے (خوشی، حیرت، دکھ)۔ اس کے بعد اکثر ! لگتا ہے۔","Wow|واؤ;Oh|اوہ;Hurray|ہُرے;Ouch|آؤچ;Alas|اَلَس;Hello|ہیلو","Wow! That is amazing!","واؤ! دیٹ اِز اَمیزنگ","واہ! یہ شاندار ہے!"]];
+function parts2(){return head("Parts of speech","اقسامِ کلام")+`<div class="card intro ur" lang="ur">انگلش کے ہر جملے کے الفاظ 8 اقسام میں بٹے ہوتے ہیں۔ ہر قسم کی مثالوں پر ٹیپ کریں اور آواز سنیں۔</div>`+PX.map(p=>`<div class="card"><div class="row"><div><div class="en">${p[0]}</div><div class="pr ur" lang="ur">${p[1]} · ${p[2]}</div></div>${spk(p[0])}</div><div class="mean ur" lang="ur">${p[3]}</div><div class="chips">${p[4].split(";").map(x=>{const[a,b]=x.split("|");return`<button class="ch" data-say="${a}"><b>${a}</b><span class="ur" lang="ur">${b}</span></button>`}).join("")}</div><div class="sent"><div class="row"><div><div class="en" style="font-size:17px">${p[5]}</div><div class="pr ur" lang="ur">${p[6]}</div><div class="mean ur" lang="ur">${p[7]}</div></div>${spk(p[5])}</div></div></div>`).join("")}
+const HM=[["words","📖","Daily Words","روزمرہ کے 300 سے زیادہ الفاظ: آواز، تلفظ اور مطلب کے ساتھ۔"],["parts","🧩","Parts of Speech","انگلش کے 8 بنیادی حصے: تعریف، مثالیں اور جملے۔"],["tenses","⏳","Tenses","12 زمانے آسان مثالوں اور اردو مطلب کے ساتھ۔"],["quiz","✅","Quiz","سیکھے ہوئے الفاظ کا مزےدار امتحان۔"]];
+function home(){return head("Welcome!","انگلش سیکھیں، آسان طریقے سے")+HM.map(h=>`<div class="card"><div class="row"><div><div class="en">${h[1]} ${h[2]}</div><div class="mean ur" lang="ur">${h[3]}</div></div><button class="go" style="flex:none" data-tab="${h[0]}">Open</button></div></div>`).join("")}
+let db=null,uid=null,me="",rows=[];
+me='';
+(async()=>{try{if(!window.claude||!claude.use)return;const d=await claude.use("db"),u=await claude.use("user");if(!d||!u)return;db=d;uid=await u.id();listen()}catch(e){}})();
+function listen(){try{db.collection("scores").orderBy("points","desc").limit(20).onSnapshot(s=>{rows=s.docs.map(d=>Object.assign({id:d.id},d.data()));const el=document.getElementById('lb');if(el)el.innerHTML=lbHtml()},()=>{})}catch(e){}}
+function lbHtml(){if(!db)return`<div class="card mean">Online leaderboard connect ho raha hai… (yeh shared link par sab ko dikhta hai)</div>`;if(!rows.length)return`<div class="card mean">Abhi koi player nahi. Naam likho aur quiz khelo, sab se pehle bano! 🥇</div>`;return rows.map((r,i)=>`<div class="card"><div class="row"><div><div class="en">${["🥇","🥈","🥉"][i]||(i+1)+"."} ${esc(String(r.name||"Player"))}${r.id===uid?" (you)":""}</div><div class="ex">Best ${r.best||0}/5 · ${r.plays||0} quiz</div></div><div class="big" style="font-size:30px">${r.points||0}</div></div></div>`).join("")}
+function board(){return head("Leaderboard","آن لائن لیڈر بورڈ")+`<div class="card intro"><div class="en">👋 Introduction</div><div class="mean ur" lang="ur">اپنا نام لکھیں اور کوئز کھیل کر لیڈر بورڈ پر آئیں۔</div><div class="row" style="margin-top:8px"><input id="nm" maxlength="20" placeholder="Apna naam / اپنا نام" value="${esc(me).replace(/"/g,'&quot;')}"><button class="go" style="flex:none" data-act="save">Save</button></div><div class="ex" id="nmmsg">${me?"Hello, "+esc(me)+"! 🎉":""}</div></div><button class="go" style="width:100%;margin:8px 0 0" data-tab="quiz">✅ Quiz khelo, points kamao</button><div class="tag">🏆 Top players (online)</div><div id="lb">${lbHtml()}</div>`}
+async function saveName(){const v=document.getElementById('nm').value.trim().slice(0,20),m=document.getElementById('nmmsg');if(!v){m.textContent="Pehle naam likho 🙂";return}me=v;try{localStorage.setItem("es_name",v)}catch(e){}m.textContent="Hello, "+v+"! 🎉";if(db&&uid){try{const r=db.doc("scores/"+uid),s=await r.get(),o=s.exists?s.data():{};await r.set({name:v,points:o.points||0,best:o.best||0,plays:o.plays||0})}catch(e){}}}
+async function submitScore(sc){if(!me||!db||!uid)return;try{const r=db.doc("scores/"+uid),s=await r.get(),o=s.exists?s.data():{};await r.set({name:me,points:(o.points||0)+sc*10,best:Math.max(o.best||0,sc),plays:(o.plays||0)+1})}catch(e){}}
+function quizV(){const h=quiz();if(Q&&Q.i>=Q.items.length&&!Q.sent){Q.sent=true;submitScore(Q.score)}return h+(Q&&Q.i>=Q.items.length?(me?`<div class="card">🏆 +${Q.score*10} points leaderboard par gaye!</div>`:`<div class="card">Leaderboard par aane ke liye <b>Board</b> tab mein apna naam likho.</div>`):"")}
+let rows2=[],vq='',TS=null,myT={};
+try{myT=JSON.parse(localStorage.getItem('es_t')||'{}')}catch(e){}
+HM.push(['vocab','📚','Vocabulary','تمام الفاظ کی لمبی فہرست: انگلش، اردو تلفظ اور مطلب۔'],['tests','📝','Tests','10 ٹیسٹ، ہر ایک 50 نمبر کا۔ نمبر لیڈر بورڈ پر جاتے ہیں۔'],['board','🏆','Leaderboard','اپنا نام لکھیں اور دیکھیں کون سب سے اچھا سیکھ رہا ہے۔']);
+function vlist(){const q=vq.toLowerCase();return W.map((w,i)=>[w,i]).filter(([w])=>!q||w[0].toLowerCase().includes(q)||w[2].includes(vq)).map(([w,i])=>`<button class='vr' data-say='${esc(w[0])}'><span class='n'>${i+1}</span><span class='e'><b>${w[0]}</b><i class='ur' lang='ur'>${w[1]}</i></span><span class='u ur' lang='ur'>${w[2]}</span></button>`).join('')}
+function vocab(){return head('Vocabulary','مکمل الفاظ کی فہرست')+`<input id='vs' placeholder='Search / تلاش' value='${esc(vq)}' style='width:100%;margin-bottom:8px'><div class='ex' style='color:#6B6892'>${W.length} words · tap to listen</div><div id='vl'>${vlist()}</div>`}
+document.addEventListener('input',e=>{if(e.target.id==='vs'){vq=e.target.value;const l=document.getElementById('vl');if(l)l.innerHTML=vlist()}});
+async function upd(f){if(!db||!uid)return;try{const r=db.doc('scores/'+uid),s=await r.get(),o=s.exists?s.data():{};await r.set(Object.assign({},o,f(o)))}catch(e){}}
+async function saveName(){const v=document.getElementById('nm').value.trim().slice(0,20),m=document.getElementById('nmmsg');if(!v){m.textContent='Pehle naam likho 🙂';return}me=v;try{localStorage.setItem('es_name',v)}catch(e){}m.textContent='Hello, '+v+'! 🎉';upd(()=>({name:v}))}
+function submitScore(sc){if(me)upd(o=>({name:me,points:(o.points||0)+sc*10,best:Math.max(o.best||0,sc),plays:(o.plays||0)+1}))}
+function finishTest(){const k=TS.k,m=TS.m;myT[k]=Math.max(myT[k]||0,m);try{localStorage.setItem('es_t',JSON.stringify(myT))}catch(e){}if(me)upd(o=>{const t=Object.assign({},o.tests||{});t['t'+k]=Math.max(t['t'+k]||0,m);return{name:me,tests:t,tTotal:Object.values(t).reduce((a,b)=>a+b,0)}})}
+function mkTest(k){const n=W.length;return{k,i:0,m:0,items:Array.from({length:50},(_,i)=>{const w=W[((k-1)*50+i)%n],rev=i%2===1,p=W.filter(x=>x[2]!==w[2]&&x[0]!==w[0]).sort(()=>Math.random()-.5).slice(0,3),o=p.map(x=>rev?x[0]:x[2]);o.push(rev?w[0]:w[2]);return{q:rev?w[2]:w[0],p:rev?'':w[1],a:rev?w[0]:w[2],say:rev?'':w[0],ur:rev,o:o.sort(()=>Math.random()-.5)}})}}
+function tests(){
+ if(!TS)return head('Tests','امتحان')+`<div class='card intro ur' lang='ur'>ہر ٹیسٹ 50 سوالوں اور 50 نمبروں کا ہے۔ آپ کے نمبر آن لائن لیڈر بورڈ پر جاتے ہیں (پہلے Board میں اپنا نام لکھیں)۔</div>`+Array.from({length:10},(_,i)=>i+1).map(k=>`<div class='card'><div class='row'><div><div class='en'>Test ${k}</div><div class='ex'>50 questions · 50 marks${myT[k]!=null?' · Best: '+myT[k]+'/50':''}</div></div><button class='go' style='flex:none' data-t='${k}'>Start</button></div></div>`).join('');
+ if(TS.i>=50)return head('Test '+TS.k,'نتیجہ')+`<div class='card'><div class='big'>${TS.m}/50</div><p>${TS.m>=40?'Shandaar! 🌟':TS.m>=25?'Achha! Thoda aur practice 💪':'Koshish jari rakho 🙂'}</p><div class='ex'>${me?'Leaderboard par save ho gaya ✅':'Board tab mein naam likho, tab leaderboard par aayega.'}</div><button class='go' style='margin-top:10px' data-t='x'>Back to tests</button></div>`;
+ const it=TS.items[TS.i];
+ return head('Test '+TS.k,'امتحان')+`<div class='bar'><i style='width:${TS.i/50*100}%'></i></div><div class='card'><div class='row'><div><div class='ex'>Question ${TS.i+1} of 50 · Marks ${TS.m}</div><div class='en ${it.ur?'ur':''}'>${it.q}</div>${it.p?`<div class='pr ur' lang='ur'>${it.p}</div>`:''}</div>${it.say?spk(it.say):''}</div></div>`+it.o.map(o=>`<button class='opt ${it.ur?'':'ur'}' data-ta='${esc(o)}'>${o}</button>`).join('')}
+function lb2Html(){if(!rows2.length)return`<div class='card mean'>Abhi kisi ne test nahi diya. Tests tab mein Test 1 shuru karo! 📝</div>`;return rows2.map((r,i)=>`<div class='card'><div class='row'><div><div class='en'>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(String(r.name||'Player'))}${r.id===uid?' (you)':''}</div><div class='ex'>${Object.keys(r.tests||{}).length}/10 tests</div></div><div class='big' style='font-size:30px'>${r.tTotal||0}</div></div></div>`).join('')}
+function boardV(){return board()+`<div class='tag'>📝 Test champions (total marks)</div><div id='lb2'>${lb2Html()}</div>`}
+function listen(){try{db.collection('scores').orderBy('points','desc').limit(20).onSnapshot(s=>{rows=s.docs.map(d=>Object.assign({id:d.id},d.data()));const el=document.getElementById('lb');if(el)el.innerHTML=lbHtml()},()=>{});db.collection('scores').orderBy('tTotal','desc').limit(20).onSnapshot(s=>{rows2=s.docs.map(d=>Object.assign({id:d.id},d.data()));const el=document.getElementById('lb2');if(el)el.innerHTML=lb2Html()},()=>{})}catch(e){}}
+let snd=true,tq=null,tl=20;
+function sayQ(a){if(!snd)return;try{speechSynthesis.cancel();a.filter(Boolean).forEach(t=>{const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u)})}catch(e){}}
+function tick(){const e=document.getElementById('tm'),f=document.getElementById('tf');if(e)e.textContent=tl>0?'⏱ '+tl+'s':'⏰ Time up!';if(f)f.style.width=Math.max(tl,0)/20*100+'%'}
+function startTimer(){clearInterval(tq);tl=20;if(!document.getElementById('tm'))app.insertAdjacentHTML('afterbegin',"<div class='tbar'><span id='tm'></span><div class='tl'><i id='tf'></i></div></div>");tick();tq=setInterval(()=>{tl--;tick();if(tl<=0){clearInterval(tq);timeUp()}},1000)}
+function lockOpts(a){document.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.dataset.ans===a||o.dataset.ta===a||o.dataset.pa===a||o.dataset.ml===a)o.classList.add('ok')})}
+function timeUp(){if(cur==='quiz'&&Q&&Q.i<Q.items.length){lockOpts(Q.items[Q.i].w[0]);setTimeout(()=>{Q.i++;render()},900)}else if(cur==='games'&&gm==='pic'&&PG){lockOpts(PG.w);setTimeout(()=>{newPic();render()},900)}else if(cur==='games'&&gm==='miss'&&MS){lockOpts(MS.c);setTimeout(()=>{newMiss();render()},900)}else if(cur==='tests'&&TS&&TS.i<50){lockOpts(TS.items[TS.i].a);setTimeout(()=>{TS.i++;if(TS.i>=50)finishTest();render()},900)}}
+function autoSpeak(){clearInterval(tq);const q=cur==='quiz'&&Q&&Q.i<Q.items.length&&!Q.end,t=cur==='tests'&&TS&&TS.i<50;if(cur!=='words'&&auto){auto=false;clearInterval(tm)}if(cur==='words')sayQ([W[wi][0],W[wi][3]]);else if(q){}else if(t){const it=TS.items[TS.i];if(it.say)sayQ([it.say])}const g=cur==='games'&&((gm==='pic'&&PG)||(gm==='miss'&&MS));if(q||t||g)startTimer()}
+function render(){app.dataset.p=cur;nav.style.display=cur==='intro'?'none':'flex';nav.innerHTML=tabs.map(t=>`<button role='tab' aria-selected='${t[0]===cur}' data-tab='${t[0]}'><span>${t[1]}</span>${t[2]}</button>`).join('');app.innerHTML=views[cur]()+(cur==='intro'?'':`<p class='credit'>Created by Rabia · 2026</p>`);window.scrollTo(0,0);autoSpeak()}
+function newQuiz(){const s=[...W].sort(()=>Math.random()-.5);Q={i:0,score:0,items:Array.from({length:200},(_,k)=>s[k%s.length]).map(w=>{const o=W.filter(x=>x[2]!==w[2]).sort(()=>Math.random()-.5).slice(0,3).map(x=>x[0]);o.push(w[0]);return{w,o:o.sort(()=>Math.random()-.5)}})}}
+function quiz(){if(!Q)newQuiz();const n=Q.items.length;if(Q.i>=n||Q.end){const p=Q.i?Math.round(Q.score/Q.i*100):0;return head('Quiz','آزمائش')+`<div class='card'><div class='big'>${Q.score}/${Q.i}</div><p>${p>=80?'Shandaar! 🌟':p>=50?'Achha! Practice jari rakho 💪':'Koshish karte raho 🙂'} (${p}%)</p><button class='go' data-act='again'>Play again</button></div>`}const it=Q.items[Q.i];return head('Quiz','آزمائش')+`<div class='bar'><i style='width:${Q.i/n*100}%'></i></div><div class='card'><div class='ex'>Question ${Q.i+1} of ${n} · Score ${Q.score}</div><div class='en ur' lang='ur' style='font-size:30px;text-align:center'>${it.w[2]}</div><div class='ex' style='text-align:center'>Choose the English word</div></div>`+it.o.map(o=>`<button class='opt' data-ans='${o}'>${o}</button>`).join('')+`<button class='go' style='width:100%;margin-top:10px' data-act='end'>Finish quiz</button>`}
+function quizV(){const h=quiz(),d=Q&&(Q.i>=Q.items.length||Q.end);if(d&&!Q.sent){Q.sent=true;submitScore(Q.score)}return h+(d?(me?`<div class='card'>🏆 +${Q.score*10} points leaderboard par gaye!</div>`:`<div class='card'>Leaderboard par aane ke liye <b>Board</b> tab mein apna naam likho.</div>`):'')}
+function lbHtml(){if(!db)return`<div class='card mean'>Online leaderboard connect ho raha hai… (yeh shared link par sab ko dikhta hai)</div>`;if(!rows.length)return`<div class='card mean'>Abhi koi player nahi. Naam likho aur quiz khelo, sab se pehle bano! 🥇</div>`;return rows.map((r,i)=>`<div class='card'><div class='row'><div><div class='en'>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(String(r.name||'Player'))}${r.id===uid?' (you)':''}</div><div class='ex'>Best ${r.best||0} correct · ${r.plays||0} quizzes</div></div><div class='big' style='font-size:30px'>${r.points||0}</div></div></div>`).join('')}
+const IN=[['📖','Learn','ہر لفظ آواز کے ساتھ سنیں، اردو تلفظ اور مطلب دیکھیں۔ Auto دبائیں تو کارڈ خود بدلتے رہیں گے۔'],['📚','Vocab','500 سے زیادہ لفظوں کی لمبی فہرست۔ لفظ ڈھونڈیں اور ٹیپ کر کے سنیں۔'],['🧩','Parts & Tenses','انگلش کی گرامر آسان مثالوں کے ساتھ۔'],['✅','Quiz','200 سوال! ہر سوال کے لیے صرف 20 سیکنڈ، تو جلدی سوچیں ⏱'],['📝','Tests','10 ٹیسٹ، ہر ایک 50 نمبر کا۔ اس میں بھی ہر سوال کے 20 سیکنڈ۔'],['🏆','Leaderboard','اپنا نام لکھیں اور دیکھیں سب سے اچھا کون سیکھ رہا ہے۔'],['🔊','Sound','اوپر والا بٹن آن ہو تو ایپ خود پڑھ کر سناتی ہے۔ آف کرنے سے خاموش۔']];
+function intro(){return `<div class='hero'><div class='bigemoji'>🐥</div><h1 style='font-size:48px;margin:6px 0 0'>Chirpy</h1><p class='ur' lang='ur' style='font-size:22px;color:#6B6892;margin:4px 0 12px'>انگلش سیکھنا بالکل مشکل نہیں!</p></div><div class='card intro ur' lang='ur'>یہ ایک چھوٹی سی، پیاری سی گیم ہے جو آپ کو روز تھوڑا تھوڑا انگلش سکھاتی ہے۔ نہ کوئی ٹینشن، نہ مشکل کتابیں۔ بس سنیں، دہرائیں اور کھیلیں!</div><div class='tag'>✨ What is inside?</div>`+IN.map(x=>`<div class='card'><div class='step'><b>${x[0]}</b><div><div class='en'>${x[1]}</div><div class='mean ur' lang='ur'>${x[2]}</div></div></div></div>`).join('')+`<div class='tag'>🚀 Start in 3 steps</div><div class='card ur' lang='ur' style='color:#2B2A4C'>1️⃣ Board میں اپنا نام لکھیں۔<br>2️⃣ Learn میں روز 10 نئے لفظ سیکھیں۔<br>3️⃣ Quiz اور Tests دے کر لیڈر بورڈ پر چمکیں ✨</div><button class='go' style='width:100%;font-size:20px;margin-top:14px' data-tab='home'>Let’s Go! 🚀</button><p class='credit'>Created by Rabia · 2026</p>`}
+HM.unshift(['intro','🎈','About Lingo Pop','گیم کا مکمل تعارف۔']);
+const views={intro,home,board:boardV,words:wordsCard2,vocab,parts:parts2,tenses,quiz:quizV,tests};let cur='intro';
+function home(){return head('Categories','کیٹیگری چنیں')+"<div class='grid'>"+HM.filter(h=>h[0]!=='intro').map(h=>`<button class='tile' data-tab='${h[0]}'><span>${h[1]}</span>${h[2]}</button>`).join('')+'</div>'}
+let hist=['intro'],hp=0;
+const bf=document.createElement('div');bf.id='bf';bf.innerHTML="<button data-nv='-1' aria-label='Back'><svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 18l-6-6 6-6'/></svg>Back</button><button data-nv='1' aria-label='Next'>Next<svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 6l6 6-6 6'/></svg></button>";document.body.appendChild(bf);
+function bfu(){bf.children[0].disabled=hp<=0;bf.children[1].disabled=hp>=hist.length-1;bf.style.bottom=cur==='intro'?'calc(20px + env(safe-area-inset-bottom,0px))':''}
+function go(t){if(t===cur)return;hist=hist.slice(0,hp+1);hist.push(t);hp++;cur=t;render();bfu()}
+function nav2(d){const n=hp+ +d;if(n<0||n>=hist.length)return;hp=n;cur=hist[hp];render();bfu()}
+const EM={Apple:'🍎',Banana:'🍌',Mango:'🥭',Orange:'🍊',Egg:'🥚',Fish:'🐟',Potato:'🥔',Tomato:'🍅',Milk:'🥛',Tea:'☕',Bread:'🍞',Rice:'🍚',Cake:'🍰',Cheese:'🧀',Lemon:'🍋',Grapes:'🍇',Honey:'🍯',Dog:'🐶',Cat:'🐱',Horse:'🐴',Cow:'🐄',Bird:'🐦',Lion:'🦁',Sun:'☀️',Moon:'🌙',Star:'⭐',Rain:'🌧️',Snow:'❄️',Cloud:'☁️',Tree:'🌳',Flower:'🌸',Fire:'🔥',Mountain:'⛰️',Book:'📚',Pen:'🖊️',Car:'🚗',Bus:'🚌',Train:'🚆',Plane:'✈️',House:'🏠',Phone:'📱',Key:'🔑',Umbrella:'☂️',Shoes:'👟',Watch:'⌚',Glasses:'👓',Bed:'🛏️',Door:'🚪',Chair:'🪑',Eye:'👁️',Ear:'👂',Heart:'❤️',Tooth:'🦷',School:'🏫',Hospital:'🏥',Mosque:'🕌',Money:'💰',Computer:'💻',Music:'🎵',Birthday:'🎂',Soap:'🧼'};
+let ST={s:0,l:'',stars:0};
+try{ST=Object.assign(ST,JSON.parse(localStorage.getItem('es_st')||'{}'))}catch(e){}
+function saveST(){try{localStorage.setItem('es_st',JSON.stringify(ST))}catch(e){}}
+(function(){const d=x=>new Date(x).toISOString().slice(0,10),T=d(Date.now()),Y=d(Date.now()-864e5);if(ST.l!==T){ST.s=ST.l===Y?ST.s+1:1;ST.l=T;saveST()}})();
+function star(n){ST.stars+=n;saveST();const c=document.querySelector('.chip');if(c)c.textContent='⭐ '+ST.stars}
+function submitScore(sc){star(Math.ceil(sc/5));if(me)upd(o=>({name:me,points:(o.points||0)+sc*10,best:Math.max(o.best||0,sc),plays:(o.plays||0)+1}))}
+function wordsCard2(){const w=W[wi];if(!seen.has(wi)){seen.add(wi);ST.stars++;saveST()}return head('Daily words','روزمرہ کے انگلش الفاظ')+`<div class='bar'><i style='width:${(wi+1)/W.length*100}%'></i></div><div class='fc'><div class='e'>Word ${wi+1} of ${W.length}</div><div class='emo'>${EM[w[0]]||'💬'}</div><div class='w'>${w[0]}</div><div class='p ur' lang='ur'>${w[1]}</div><div class='m ur' lang='ur'>${w[2]}</div>${w[3]?`<div class='e'>“${w[3]}”</div>`:''}<button class='spk' style='margin-top:14px' aria-label='Listen again' data-say='${esc(w[0])}'>🔊</button></div><div class='row'><button class='go' data-w='-1'>◀ Back</button><button class='go' data-w='auto'>${auto?'⏸ Stop':'▶ Auto'}</button><button class='go' data-w='1'>Next ▶</button></div>`}
+function vlist(){const q=vq.toLowerCase();return W.map((w,i)=>[w,i]).filter(([w])=>!q||w[0].toLowerCase().includes(q)||w[2].includes(vq)).map(([w,i])=>`<button class='vr' data-say='${esc(w[0])}'><span class='n'>${EM[w[0]]||i+1}</span><span class='e'><b>${w[0]}</b><i class='ur' lang='ur'>${w[1]}</i></span><span class='u ur' lang='ur'>${w[2]}</span></button>`).join('')}
+HM.push(['speak','🎤','Speak'],['stories','💬','Stories'],['games','🎮','Games']);
+tabs.splice(7,0,['speak','🎤','Speak'],['stories','💬','Stories'],['games','🎮','Games']);
+function home(){const B=[[3,'🥉'],[7,'🥈'],[30,'🥇']];return head('Categories','کیٹیگری چنیں')+`<div class='card'><div class='row'><div><div class='en'>🔥 ${ST.s} day streak</div><div class='ex'>Roz app kholo, stars aur badges jeeto!</div></div><div class='big' style='font-size:30px'>⭐ ${ST.stars}</div></div><div class='badges'>${B.map(b=>`<span style='opacity:${ST.s>=b[0]?1:.25}'>${b[1]} ${b[0]} days</span>`).join('')}</div></div><div class='grid'>`+HM.filter(h=>h[0]!=='intro').map(h=>`<button class='tile' data-tab='${h[0]}'><span>${h[1]}</span>${h[2]}</button>`).join('')+'</div>'}
+let sp={i:0};
+function speak(){const w=W[sp.i];return head('Speak','بول کر چیک کریں')+`<div class='fc'><div class='emo'>${EM[w[0]]||'🗣️'}</div><div class='w'>${w[0]}</div><div class='p ur' lang='ur'>${w[1]}</div><div class='m ur' lang='ur'>${w[2]}</div><button class='spk' style='margin-top:12px' data-say='${esc(w[0])}'>🔊</button></div><button class='go' style='width:100%;font-size:19px' data-act='mic'>🎤 Tap and say it</button><div class='card' id='sr' style='text-align:center;margin-top:12px'>Mic dabayein aur lafz bolein</div><button class='go' style='width:100%' data-act='spn'>Next word ▶</button>`}
+function mic(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,o=document.getElementById('sr');if(!R){o.textContent='Is browser mein mic check nahi chalta. Chrome try karein.';return}const r=new R();r.lang='en-US';r.maxAlternatives=3;o.textContent='🎧 Listening…';r.onresult=e=>{const w=W[sp.i][0].toLowerCase(),a=Array.from(e.results[0]).map(x=>x.transcript.toLowerCase().replace(/[^a-z ]/g,'').trim()),ok=a.some(t=>t===w||t.split(' ').includes(w));o.innerHTML=ok?'✅ Wah! Bilkul sahi (+1 ⭐)':'🔁 Aap ne kaha: <b>'+a[0]+'</b>. Dobara koshish karein';if(ok)star(1)};r.onerror=()=>{o.textContent='Mic allow nahi hua ya awaaz nahi aayi. Dobara try karein.'};try{r.start()}catch(e){}}
+const DL=[['🛒','At the shop',[['How much is this?','یہ کتنے کا ہے؟'],['It is fifty rupees.','یہ پچاس روپے کا ہے۔'],['Okay, I will take it.','ٹھیک ہے، میں لے لوں گا۔'],['Thank you!','شکریہ!']]],['👫','Meeting a friend',[['Hello! How are you?','ہیلو! آپ کیسے ہیں؟'],['I am fine, thank you. And you?','میں ٹھیک ہوں، شکریہ۔ اور آپ؟'],['I am good too.','میں بھی ٹھیک ہوں۔'],['See you tomorrow!','کل ملتے ہیں!']]],['🏫','At school',[['May I come in, teacher?','کیا میں اندر آ سکتا ہوں؟'],['Yes, please sit down.','جی ہاں، بیٹھ جائیں۔'],['Sorry, I am late.','معذرت، مجھے دیر ہو گئی۔'],['It is okay. Open your book.','کوئی بات نہیں۔ کتاب کھولیں۔']]],['🍽️','At a restaurant',[['I would like some tea, please.','مجھے تھوڑی چائے چاہیے۔'],['Sure. Anything to eat?','ضرور۔ کھانے کو کچھ؟'],['Yes, bread and eggs.','جی، روٹی اور انڈے۔'],['The bill, please.','بل دیجیے۔']]],['🏥','At the doctor',[['I have a fever and a headache.','مجھے بخار اور سر درد ہے۔'],['Drink water and take rest.','پانی پئیں اور آرام کریں۔'],['Thank you, doctor.','شکریہ، ڈاکٹر صاحب۔']]]];
+function stories(){return head('Stories','چھوٹی کہانیاں اور مکالمے')+"<div class='ex'>Line par tap karein aur sunein</div>"+DL.map(d=>`<div class='card'><div class='en'>${d[0]} ${d[1]}</div>${d[2].map((l,i)=>`<button class='vr' data-say='${l[0]}'><span class='n'>${i%2?'B':'A'}</span><span class='e'><b style='font-size:17px'>${l[0]}</b></span><span class='u ur' lang='ur' style='font-size:16px'>${l[1]}</span></button>`).join('')}</div>`).join('')}
+let gm='match',MG=null,PG=null;const PIC=Object.keys(EM);
+function newMatch(){const p=[...W].sort(()=>Math.random()-.5).filter((w,i,a)=>a.findIndex(x=>x[2]===w[2])===i).slice(0,6);MG={sel:null,done:[],L:p.map((w,i)=>({id:i,t:w[0],s:'e'})).sort(()=>Math.random()-.5),R:p.map((w,i)=>({id:i,t:w[2],s:'u'})).sort(()=>Math.random()-.5)}}
+function newPic(){const w=PIC[Math.floor(Math.random()*PIC.length)],o=PIC.filter(x=>x!==w).sort(()=>Math.random()-.5).slice(0,3);o.push(w);PG={w,o:o.sort(()=>Math.random()-.5),sc:PG?PG.sc:0}}
+function games(){const t="<div class='row' style='margin:6px 0 12px'><button class='go' data-gm='match'>🔗 Match</button><button class='go' data-gm='pic'>🖼️ Picture quiz</button></div>",h=head('Games','مزے دار گیمز')+t;if(gm==='pic'){if(!PG)newPic();return h+`<div class='fc'><div class='emo'>${EM[PG.w]}</div><div class='e'>Yeh kya hai? · Score ${PG.sc}</div></div>`+PG.o.map(o=>`<button class='opt' data-pa='${o}'>${o}</button>`).join('')}if(!MG)newMatch();const d=MG.done;return h+(d.length===6?"<div class='card'><div class='en'>🎉 Wah! Sab match ho gaye (+3 ⭐)</div><button class='go' style='margin-top:8px' data-gm='newm'>New game</button></div>":"<div class='ex'>English aur Urdu ko jorein</div>")+"<div class='mg'>"+['L','R'].map(k=>'<div>'+MG[k].map(x=>{const key=x.s+x.id,ok=d.includes(x.id);return`<button class='mt ${ok?'ok':''} ${MG.sel===key?'sel':''} ${x.s==='u'?'ur':''}' ${ok?'disabled':''} data-mt='${key}'>${x.t}</button>`}).join('')+'</div>').join('')+'</div>'}
+views.speak=speak;views.stories=stories;views.games=games;
+Object.assign(EM,Object.fromEntries('Wake up⏰|Breakfast🥞|Hurry💨|Tired🥱|Schedule📅|Market🛒|Friend👫|Hungry🤤|Late🕙|Help🆘|Water💧|Morning🌅|Good night🌜|Thank you🙏|Please🥺|Sorry😔|Welcome🤗|Yes✅|No❌|Name🏷️|Family👪|Mother👩|Father👨|Brother🧔|Sister👧|Son👦|Daughter🎀|Window🪟|Room🛋️|Kitchen🥘|Table🍽️|Lesson📖|Question❓|Answer✔️|Student🎒|Teacher🧑‍🏫|Read🤓|Write✍️|Speak🗣️|Listen🎧|Eat😋|Drink🥤|Sleep🛌|Walk🚶|Run🏃|Sit🧘|Stand🧍|Come🙋|Go🚦|Give🤲|Take✊|Buy🛍️|Sell🏪|Open🔓|Close🔒|Learn🎓|Think💭|Know🧠|Love💕|Happy😊|Sad😢|Angry😠|Big🐘|Small🐜|Hot🥵|Cold🥶|New🆕|Old👴|Good👍|Bad👎|Fast⚡|Slow🐢|Easy👌|Difficult😰|Beautiful🌺|Clean✨|Red🔴|Blue🔵|Green🟢|White⚪|Black⚫|One①|Two②|Three③|Ten⑩|Today📆|Tomorrow⏭️|Yesterday⏮️|Week🗓️|Month🈷️|Year🎆|Time🕐|Night🌃|Road🛣️|City🏙️|Country🌍|Doctor👨‍⚕️|Work💼|Office🏢|Meat🥩|Chicken🍗|Vegetable🥦|Onion🧅|Salt🧂|Sugar🍬|Butter🧈|Juice🧃|Food🍲|Dinner🍛|Lunch🥪|Head🙂|Nose👃|Mouth👄|Hand✋|Leg🦵|Face😀|Hair💇|Finger☝️|Foot🦶|Ticket🎫|Airport🛫|Station🚉|Journey🛤️|Map🗺️|Street🚏|Bridge🌉|Passport🛂|Hotel🏨|Luggage🧳|Left⬅️|Right➡️|Near🔘|Far🔭|Sky🌌|Wind🍃|River🚣|Garden🌷|Sea🌊|Earth🌎|Goat🐐|Boss🤵|Job👷|Meeting🤝|Salary💵|Customer🧑‍💼|Shop🏬|Price💲|Cheap🪙|Expensive💎|Gift🎁|Neighbor🏡|Guest🛎️|Child🧒|Man🧔‍♂️|Woman👩‍🦱|Boy👦|Girl👧|Want🙌|Need📌|Like😍|Wait⏳|Call📞|Ask🙋‍♀️|Tell🗨️|Show🎬|Find🔍|Start🏁|Finish🏆|Play⚽|Sing🎤|Laugh😂|Cry😭|Cook👨‍🍳|Wash🚿|Wear👕|Bring📦|Send📤|Win🏅|Lose😞|Forget🤷|Remember🗒️|Understand💡|Try🎯|Meet👋|Stay🏠|Pay💳|Strong💪|Weak🥀|Rich🤑|Poor🙇|Young🧑|Long📏|Short🤏|Heavy🏋️|Light🔆|Full🈵|Empty🫙|Dirty🗑️|Safe🛡️|Important❗|Ready🚀|Busy🧑‍💻|Free🆓|Sick🤒|Healthy🥗|Sweet🍭|Quiet🤫|Loud📢|Dark🌑|Bright🌟|Wrong🙅|Correct✔️|True☑️|Same🟰|Always♾️|Never🚫|Sometimes🔄|Now👇|Soon🔜|Before⏪|After⏩|Here📍|There👉|Because🔗|With👫|Without🈚|Many🔢|All🌐|Every🔁|Again🔂|Very‼️|Also➕|Only☝️|Monday😩|Tuesday🌮|Wednesday🐫|Thursday🔨|Friday🕌|Saturday🎉|Sunday😎|Five⑤|Hundred💯|Thousand🎖️|First🥇|Zero⓪|Four④|Six⑥|Seven⑦|Eight⑧|Nine⑨|Twenty⑳|Fifty㊿|Half🌗|Last🔚|Next➡️|Shirt👔|Trousers👖|Socks🧦|Hat🎩|Dress👗|Bag👜|Pocket🧷|Ring💍|Lock🔒|Lamp🪔|Mirror🪞|Clock🕰️|Cup🍵|Plate🍽️|Spoon🥄|Knife🔪|Fork🍴|Bottle🍼|Bucket🪣|Broom🧹|Blanket🧶|Pillow💤|Carpet🟫|Wall🧱|Roof🏚️|Floor🪵|Stairs🪜|Fan🌀|Towel🧺|Comb💈|Engineer⚙️|Farmer🧑‍🌾|Driver🚖|Lawyer⚖️|Police👮|Soldier🪖|Nurse👩‍⚕️|Chef🧑‍🍳|Tailor🧵|Pilot🧑‍✈️|Artist🎨|Singer🎙️|Writer📝|Judge🧑‍⚖️|Park🌳|Bank🏦|Library📚|Museum🏛️|Village🏘️|Beach🏖️|Desert🏜️|Forest🌲|Island🏝️|Lake🛶|Restaurant🍴|Pharmacy💊|Farm🚜|Medicine💊|Fever🤒|Pain😣|Cough🤧|Health🩺|Injury🤕|Blood🩸|Bone🦴|Skin🧴|Stomach🤢|Shoulder🙆|Neck🦒|Internet🌐|Screen🖥️|Message💬|Email📧|Password🔐|Photo📷|Game🎮|Exam📋|Page📄|Letter✉️|Word🔤|Sentence📜|Story📖|Dictionary📕|Class🏫|Paper📃|Pencil✏️|Afraid😨|Brave🦸|Proud😌|Shy🙈|Lonely🥺|Excited🤩|Worried😟|Surprised😲|Kind🥰|Rude🤬|Polite🙏|Honest😇|Lazy🦥|Clever🧐|Funny🤪|Famous🌟|Different🔀|Possible🆗|Jump🤸|Fly🕊️|Swim🏊|Climb🧗|Fall🍂|Push👉|Pull🧲|Throw🥎|Catch🧤|Hold🫶|Cut✂️|Break💔|Build🏗️|Fix🔧|Draw🖍️|Paint🖌️|Dance💃|Travel✈️|Visit🚪|Invite💌|Agree🤝|Choose👆|Decide⚖️|Change🔁|Keep🗃️|Borrow📥|Return↩️|Arrive🛬|Leave👣|Enter⤵️|Hope🌈|Believe🤞|See👀|Smell👃|Taste👅|Touch🤚|Smile😁|Shout📣|Hour🕒|Minute⏱️|Noon🌞|Evening🌇|Midnight🕛|Holiday🎊|Season🌦️|Summer☀️|Winter⛄|Spring🌱|Autumn🍁|Between↔️|Behind🔙|Front🔛|Inside🔲|Outside🌤️|Above⬆️|Below⬇️|Around🔃|Maybe🤔|Together👭|Alone🧎|Everyone👥|Nobody👻|Something🧩|Nothing🕳️|Where❔|When🕰️|Why🤨|How🛠️|Who🕵️|What🤷‍♂️|Which👆|Soup🍜|Salad🥗|Biscuit🍪|Chocolate🍫|Pepper🌶️|Oil🛢️|Flour🌾|Fruit🍉|Lentils🫘|Yogurt🥣|Curry🍛|Life🌱|Dream🌠|Peace☮️|War⚔️|Freedom🗽|Truth🔎|Idea💡|Problem⚠️|Solution✅|Reason🧐|Fear😱|Luck🍀|Power🔋|Voice🎤|Noise🔊|Colour🌈|Shape🔺|Weight⚖️|Number🔢|Team👥|Party🥳|Wedding💒|Festival🎇|Prayer🕋'.split('|').map(s=>{const m=s.match(/^([ -~]+?)([^ -~].*)$/);return m?[m[1].trim(),m[2]]:['','']})));
+W.forEach(w=>{if(!EM[w[0]])EM[w[0]]='🔤'});
+const PIC2=[...new Set([...PIC,...'Water Window Room Kitchen Mother Father Brother Sister Teacher Student Doctor Road City Office Meat Chicken Vegetable Onion Salt Sugar Butter Juice Head Nose Mouth Hand Leg Face Hair Finger Foot Ticket Airport Station Map Bridge Passport Hotel Luggage Sky River Garden Sea Earth Goat Shop Gift Child Boy Girl Shirt Trousers Socks Hat Dress Bag Ring Lock Lamp Mirror Clock Cup Plate Spoon Knife Fork Bottle Bucket Broom Blanket Pillow Carpet Wall Stairs Fan Towel Comb Farmer Driver Police Soldier Nurse Chef Tailor Pilot Artist Judge Bank Library Museum Village Beach Desert Forest Island Lake Pharmacy Farm Blood Bone Skin Neck Screen Email Photo Page Letter Pencil Paper Soup Salad Biscuit Chocolate Pepper Oil Flour Fruit Yogurt Curry Winter Summer Spring Autumn Wedding Festival Party Team Dinner Lunch Breakfast'.split(' ')])].filter(x=>EM[x]);
+function newPic(){const w=PIC2[Math.floor(Math.random()*PIC2.length)],o=shuf(PIC2.filter(x=>x!==w&&EM[x]!==EM[w])).slice(0,3);o.push(w);PG={w,o:shuf(o),sc:PG?PG.sc:0}}
+const BRAND=`<div class='brand'><svg width='230' height='88' viewBox='0 0 230 88'><rect x='20' y='62' width='190' height='5' fill='#8B5A2B'/><rect x='38' y='22' width='16' height='40' rx='2' fill='#7A1F2B'/><rect x='56' y='12' width='16' height='50' rx='2' fill='#1F5266'/><rect x='74' y='32' width='14' height='30' rx='2' fill='#C79A12'/><rect x='90' y='6' width='16' height='56' rx='2' fill='#2E5E3E'/><rect x='108' y='26' width='14' height='36' rx='2' fill='#6B4A8C'/><rect x='124' y='34' width='14' height='28' rx='2' fill='#A9482B'/><rect x='140' y='10' width='16' height='52' rx='2' fill='#1F3A63'/><rect x='160' y='30' width='14' height='32' rx='2' fill='#8B6B3A' transform='rotate(12 167 62)'/><rect x='178' y='20' width='14' height='42' rx='2' fill='#7A1F2B'/></svg><div class='bt'>WordShelf</div><div class='gold'>✦ ✦ ✦</div><div class='ur bu' lang='ur'>انگلش سیکھیں</div></div>`;
+function intro(){return BRAND+`<h1 style='font-size:38px'>Introduction</h1><p class='ipara'>Welcome to your cosy little library of English! Wander the shelves of Words, Grammar, Stories and Games, take Tests, and watch your name climb the leaderboard one book at a time. Write your name below and turn to the first page.</p><input id='nm' maxlength='20' placeholder='Your name' value='${esc(me).replace(/'/g,'&#39;')}' style='width:100%'><button class='go pri' style='margin-top:14px;padding:14px 28px' data-act='istart'>Start</button><p class='credit'></p>`}
+function testsMenu(){return head('Final Tests','امتحان')+`<div class='sech'>🎓 Final Tests</div><p class='sdesc'>Ten tough exams, 50 questions and 50 marks each, with 20 seconds per question.</p><div class='grid'>${Array.from({length:10},(_,i)=>i+1).map(k=>`<button class='tile' data-t='${k}'><span>🎓</span>Test ${k}<small>${myT[k]!=null?'Best '+myT[k]+'/50':'50 questions'}</small></button>`).join('')}</div>`}
+const _vt=views.tests,_vh=views.home;
+views.tests=()=>TS?_vt().replace("<div class='bar'>","<button class='go' data-t='x' style='margin:2px 0 8px'>◀ All tests</button><div class='bar'>"):testsMenu();
+views.home=()=>_vh().replace('<h1>Categories</h1>','<h1>Welcome'+(me?', '+esc(me):'')+' 👋</h1>');
+const U=t=>`<div class='ur' lang='ur'>${t}</div>`;
+const TRP=[['Roz app kholo, stars aur badges jeeto!',U('روز ایپ کھولیں، ستارے اور بیج جیتیں!')],
+['Online leaderboard connect ho raha hai… (yeh shared link par sab ko dikhta hai)',U('آن لائن لیڈر بورڈ جڑ رہا ہے… (شیئر کیے گئے لنک پر سب کو نظر آتا ہے)')],
+['Abhi koi player nahi. Naam likho aur quiz khelo, sab se pehle bano! 🥇',U('ابھی کوئی کھلاڑی نہیں۔ اپنا نام لکھیں، کوئز کھیلیں اور سب سے آگے نکلیں! 🥇')],
+['Abhi kisi ne test nahi diya. Tests tab mein Test 1 shuru karo! 📝',U('ابھی کسی نے ٹیسٹ نہیں دیا۔ ٹیسٹ 1 سے شروع کریں! 📝')],
+['Quiz khelo, points kamao','کوئز کھیلیں، پوائنٹس کمائیں'],['Top players (online)','بہترین کھلاڑی (آن لائن)'],['Test champions (total marks)','ٹیسٹ کے چیمپئن (کل نمبر)'],
+['Apna naam / اپنا نام','اپنا نام لکھیں'],['>Save<','>محفوظ کریں<'],['Introduction</div>','تعارف</div>'],
+['Finish quiz','کوئز ختم کریں'],['Play again','دوبارہ کھیلیں'],['Shandaar!','شاندار!'],['Achha! Practice jari rakho','اچھا! مشق جاری رکھیں'],['Achha! Thoda aur practice','اچھا! تھوڑی اور مشق کریں'],['Koshish karte raho','کوشش کرتے رہیں'],['Koshish jari rakho','کوشش جاری رکھیں'],
+['Leaderboard par aane ke liye <b>Board</b> tab mein apna naam likho.',U('لیڈر بورڈ پر آنے کے لیے <b>لیڈر بورڈ</b> والے صفحے پر اپنا نام لکھیں۔')],
+['Leaderboard par save ho gaya ✅','لیڈر بورڈ پر محفوظ ہو گیا ✅'],['Board tab mein naam likho, tab leaderboard par aayega.','پہلے لیڈر بورڈ والے صفحے پر اپنا نام لکھیں، تب نمبر وہاں نظر آئیں گے۔'],['Back to tests','ٹیسٹ کی فہرست پر واپس'],
+['Ten tough exams, 50 questions and 50 marks each, with 20 seconds per question.','دس امتحان، ہر ایک میں 50 سوال اور 50 نمبر، اور ہر سوال کے لیے 20 سیکنڈ۔'],["<p class='sdesc'>","<p class='sdesc ur' lang='ur'>"],
+['Line par tap karein aur sunein',U('کسی بھی جملے پر ٹیپ کریں اور سنیں')],['English aur Urdu ko jorein',U('انگلش لفظ کو اس کے اردو مطلب سے جوڑیں')],['Wah! Sab match ho gaye (+3 ⭐)','واہ! سب جوڑیاں مل گئیں (+3 ⭐)'],['New game','نیا گیم'],['◀ All games','◀ تمام گیمز'],
+['Yeh kya hai?','یہ کیا ہے؟'],['Harf sahi tarteeb mein lagayein','حروف کو صحیح ترتیب میں لگائیں'],['Kaun sa harf gum hai?','کون سا حرف غائب ہے؟'],['>Clear<','>مٹائیں<'],['✅ Wah!','✅ واہ!'],['🔁 Dobara koshish','🔁 دوبارہ کوشش کریں'],
+['Tap and say it','ٹیپ کریں اور بولیں'],['Mic dabayein aur lafz bolein',U('مائیک دبائیں اور یہ لفظ بولیں')],['Next word ▶','اگلا لفظ ▶'],
+['◀ Back</button>','◀ پیچھے</button>'],['Next ▶</button>','آگے ▶</button>'],['▶ Auto</button>','▶ خودکار</button>'],['⏸ Stop</button>','⏸ روکیں</button>'],['🔊 On<','🔊 آواز چالو<'],['🔇 Off<','🔇 آواز بند<'],
+['Welcome to your cosy little library of English! Wander the shelves of Words, Grammar, Stories and Games, take Tests, and watch your name climb the leaderboard one book at a time. Write your name below and turn to the first page.','اپنی چھوٹی سی پیاری لائبریری میں خوش آمدید! یہاں الفاظ، گرامر، کہانیاں اور گیمز کی الماریاں ہیں۔ ٹیسٹ دیں اور ایک ایک کتاب کے ساتھ لیڈر بورڈ پر اپنا نام اوپر لے جائیں۔ نیچے اپنا نام لکھیں اور پہلا صفحہ کھولیں۔'],["<p class='ipara'>","<p class='ipara ur' lang='ur'>"],["<h1 style='font-size:38px'>Introduction</h1>","<h1 class='ur' lang='ur' style='font-size:34px'>تعارف</h1>"],["placeholder='Your name'","placeholder='آپ کا نام'"],["data-act='istart'>Start</button>","data-act='istart'>شروع کریں</button>"],
+['At the shop','دکان پر'],['Meeting a friend','دوست سے ملاقات'],['At school','اسکول میں'],['At a restaurant','ریستوران میں'],['At the doctor','ڈاکٹر کے پاس'],['Hello, ','خوش آمدید، '],['(you)','(آپ)'],["placeholder='Search / تلاش'","placeholder='تلاش کریں'"]];
+const TRX=[[/([0-9]+) day streak/g,'$1 دن لگاتار'],[/([0-9]+) days/g,'$1 دن'],[/Question ([0-9]+) of ([0-9]+) · Score ([0-9]+)/g,'سوال $1 / $2 · اسکور $3'],[/Question ([0-9]+) of 50 · Marks ([0-9]+)/g,'سوال $1 / 50 · نمبر $2'],[/Score ([0-9]+)/g,'اسکور $1'],[/Word ([0-9]+) of ([0-9]+)/g,'لفظ $1 / $2'],[/Best ([0-9]+) correct · ([0-9]+) quizzes/g,'بہترین: $1 درست · $2 کوئز'],[/Best ([0-9]+)[/]50/g,'بہترین: $1/50'],[/([0-9]+)[/]10 tests/g,'$1/10 ٹیسٹ'],[/50 questions/g,'50 سوال'],[/[+]([0-9]+) points leaderboard par gaye!/g,'+$1 پوائنٹس لیڈر بورڈ پر پہنچ گئے!'],[/([0-9]+) words · tap to listen/g,'$1 الفاظ · سننے کے لیے ٹیپ کریں']];
+const TRE=[['Roz app kholo, stars aur badges jeeto!','Open the app daily to earn stars and badges!'],['Online leaderboard connect ho raha hai… (yeh shared link par sab ko dikhta hai)','Connecting to the online leaderboard… (everyone with the shared link can see it)'],['Abhi koi player nahi. Naam likho aur quiz khelo, sab se pehle bano! 🥇','No players yet. Enter your name, play the quiz and be the first! 🥇'],['Abhi kisi ne test nahi diya. Tests tab mein Test 1 shuru karo! 📝','Nobody has taken a test yet. Start with Test 1! 📝'],['Quiz khelo, points kamao','Play the quiz, earn points'],['Apna naam / اپنا نام','Your name'],
+['اپنا نام لکھیں اور کوئز کھیل کر لیڈر بورڈ پر آئیں۔',"<span style='direction:ltr;display:block'>Enter your name and play the quiz to join the leaderboard.</span>"],
+['Shandaar!','Excellent!'],['Achha! Practice jari rakho','Good! Keep practising'],['Achha! Thoda aur practice','Good! A little more practice'],['Koshish karte raho','Keep trying'],['Koshish jari rakho','Keep trying'],
+['Leaderboard par aane ke liye <b>Board</b> tab mein apna naam likho.','To appear on the leaderboard, enter your name on the <b>Leaderboard</b> page.'],[/[+]([0-9]+) points leaderboard par gaye!/g,'+$1 points added to the leaderboard!'],['Leaderboard par save ho gaya ✅','Saved to the leaderboard ✅'],['Board tab mein naam likho, tab leaderboard par aayega.','Enter your name on the Leaderboard page first; your marks will show there.'],
+['Line par tap karein aur sunein','Tap any line to listen'],['English aur Urdu ko jorein','Match each English word with its Urdu meaning'],['Wah! Sab match ho gaye (+3 ⭐)','Great! All pairs matched (+3 ⭐)'],['Yeh kya hai?','What is this?'],['Harf sahi tarteeb mein lagayein','Put the letters in the right order'],['Kaun sa harf gum hai?','Which letter is missing?'],['✅ Wah!','✅ Correct!'],['🔁 Dobara koshish','🔁 Try again'],['Mic dabayein aur lafz bolein','Tap the mic and say the word'],
+["placeholder='Search / تلاش'","placeholder='Search a word'"],['جوڑیاں ملائیں','Match the pairs'],['تصویر پہچانیں','Guess the picture'],['لفظ بنائیں','Build the word'],['گم شدہ حرف','Find the letter'],
+['انگلش کے ہر جملے کے الفاظ 8 اقسام میں بٹے ہوتے ہیں۔ ہر قسم کی مثالوں پر ٹیپ کریں اور آواز سنیں۔','Every English sentence is made of 8 kinds of words. Tap the examples to listen.'],['class="card intro ur" lang="ur"','class="card intro"']];
+const tr=s=>{TRE.forEach(([a,b])=>{s=typeof a==='string'?s.split(a).join(b):s.replace(a,b)});return s};
+Object.keys(views).forEach(k=>{const f=views[k];views[k]=()=>tr(f())});
+bf.children[0].lastChild.nodeValue='Back';bf.children[1].firstChild.nodeValue='Next';
+let TN=[null,null];
+const TG=[['Past Tense','🕰️','ماضی','Things that already happened'],['Present Tense','📍','حال','Things happening now, or again and again'],['Future Tense','🚀','مستقبل','Things that will happen']];
+const TSN=[[
+['Past Indefinite (Simple)','ماضی مطلق','Subject + V2 + Object','جو کام گزرے ہوئے وقت میں شروع ہو کر ختم ہو چکا ہو۔','yesterday, last week, ago, in 2020',[['I visited Lahore last year.','آئی وِزِٹڈ لاہور لاسٹ ایئر','میں پچھلے سال لاہور گیا تھا۔'],['She bought a new phone.','شی بَاٹ اے نیو فون','اس نے نیا فون خریدا۔'],['We watched a movie yesterday.','وی واچڈ اے مووی یسٹرڈے','ہم نے کل فلم دیکھی۔']]],
+['Past Continuous','ماضی جاری','Subject + was/were + V1-ing','ماضی میں کوئی کام جاری تھا، جب کوئی دوسرا کام ہوا۔','while, when, at 5 pm yesterday',[['I was sleeping when you called.','آئی وَز سلیپنگ وین یو کالڈ','جب آپ نے فون کیا میں سو رہا تھا۔'],['They were playing in the park.','دے وَر پلیئنگ اِن دی پارک','وہ پارک میں کھیل رہے تھے۔'],['She was cooking dinner.','شی وَز کُکنگ ڈِنر','وہ رات کا کھانا پکا رہی تھی۔']]],
+['Past Perfect','ماضی تمام','Subject + had + V3','ماضی کے دو کاموں میں سے جو کام پہلے ہوا، اس کے لیے۔','before, after, by the time, already',[['The train had left before I arrived.','دی ٹرین ہیڈ لیفٹ بِفور آئی اَرائیوڈ','میرے پہنچنے سے پہلے ٹرین جا چکی تھی۔'],['She had eaten before we came.','شی ہیڈ ایٹن بِفور وی کیم','ہمارے آنے سے پہلے وہ کھا چکی تھی۔'],['I had never seen snow before.','آئی ہیڈ نیور سین اسنو بِفور','میں نے پہلے کبھی برف نہیں دیکھی تھی۔']]],
+['Past Perfect Continuous','ماضی تمام جاری','Subject + had been + V1-ing','ماضی میں کوئی کام کچھ وقت سے جاری تھا اور پھر رک گیا۔','for, since, how long, before',[['I had been waiting for an hour.','آئی ہیڈ بِین ویٹنگ فار این آور','میں ایک گھنٹے سے انتظار کر رہا تھا۔'],['She had been crying all night.','شی ہیڈ بِین کرائنگ آل نائٹ','وہ ساری رات روتی رہی تھی۔'],['They had been working since morning.','دے ہیڈ بِین ورکنگ سنس مارننگ','وہ صبح سے کام کر رہے تھے۔']]]],[
+['Present Indefinite (Simple)','حالِ مطلق','Subject + V1 (add s/es for he, she, it) + Object','روزمرہ کی عادت، ہمیشہ سچ بات یا بار بار ہونے والا کام بتانے کے لیے۔','always, usually, daily, every day, never',[['I drink tea every morning.','آئی ڈرنک ٹی ایوری مارننگ','میں ہر صبح چائے پیتا ہوں۔'],['She goes to school.','شی گوز ٹو اسکول','وہ اسکول جاتی ہے۔'],['The sun rises in the east.','دی سَن رائزز اِن دی ایسٹ','سورج مشرق سے نکلتا ہے۔']]],
+['Present Continuous','حالِ جاری','Subject + am/is/are + V1-ing','جو کام ابھی اسی وقت ہو رہا ہو، یا ان دنوں جاری ہو۔','now, at the moment, right now, look!, listen!',[['I am reading a book.','آئی ایم ریڈنگ اے بُک','میں کتاب پڑھ رہا ہوں۔'],['They are playing cricket.','دے آر پلیئنگ کرکٹ','وہ کرکٹ کھیل رہے ہیں۔'],['It is raining now.','اِٹ اِز رینِنگ ناؤ','اب بارش ہو رہی ہے۔']]],
+['Present Perfect','حالِ تمام','Subject + have/has + V3','کام ابھی ابھی مکمل ہوا ہو، یا اس کا اثر اب تک باقی ہو۔','just, already, yet, ever, never, since, for',[['I have finished my homework.','آئی ہیو فِنِشڈ مائی ہوم ورک','میں نے اپنا ہوم ورک ختم کر لیا ہے۔'],['She has just left.','شی ہیز جَسٹ لیفٹ','وہ ابھی ابھی گئی ہے۔'],['We have lived here for five years.','وی ہیو لِوڈ ہِیر فار فائیو ایئرز','ہم یہاں پانچ سال سے رہ رہے ہیں۔']]],
+['Present Perfect Continuous','حالِ تمام جاری','Subject + have/has + been + V1-ing','کام کچھ وقت پہلے شروع ہوا اور اب تک جاری ہے۔','since, for, all day, how long',[['I have been studying since morning.','آئی ہیو بِین اسٹڈینگ سنس مارننگ','میں صبح سے پڑھ رہا ہوں۔'],['He has been working for two hours.','ہی ہیز بِین ورکنگ فار ٹو آورز','وہ دو گھنٹے سے کام کر رہا ہے۔'],['It has been raining all day.','اِٹ ہیز بِین رینِنگ آل ڈے','سارا دن بارش ہو رہی ہے۔']]]],[
+['Future Indefinite (Simple)','مستقبل مطلق','Subject + will/shall + V1','آنے والے وقت میں کوئی کام ہوگا، یا ابھی کا فیصلہ اور وعدہ۔','tomorrow, next week, soon, tonight',[['I will call you tomorrow.','آئی وِل کال یو ٹومارو','میں کل آپ کو فون کروں گا۔'],['She will come soon.','شی وِل کَم سون','وہ جلد آئے گی۔'],['We will visit Murree next week.','وی وِل وِزِٹ مَری نیکسٹ ویک','ہم اگلے ہفتے مری جائیں گے۔']]],
+['Future Continuous','مستقبل جاری','Subject + will be + V1-ing','مستقبل کے کسی وقت پر کام جاری ہوگا۔','at this time tomorrow, at 8 pm',[['I will be sleeping at 10 pm.','آئی وِل بی سلیپنگ ایٹ ٹین پی ایم','میں رات دس بجے سو رہا ہوں گا۔'],['They will be travelling tomorrow.','دے وِل بی ٹریولنگ ٹومارو','وہ کل سفر کر رہے ہوں گے۔'],['She will be cooking at noon.','شی وِل بی کُکنگ ایٹ نون','وہ دوپہر کو کھانا پکا رہی ہو گی۔']]],
+['Future Perfect','مستقبل تمام','Subject + will have + V3','مستقبل کے کسی وقت تک کام مکمل ہو چکا ہوگا۔','by tomorrow, by next year, by the time',[['I will have finished by evening.','آئی وِل ہیو فِنِشڈ بائی ایوننگ','میں شام تک ختم کر چکا ہوں گا۔'],['She will have left by then.','شی وِل ہیو لیفٹ بائی دین','وہ تب تک جا چکی ہو گی۔'],['We will have reached Lahore by noon.','وی وِل ہیو ریچڈ لاہور بائی نون','ہم دوپہر تک لاہور پہنچ چکے ہوں گے۔']]],
+['Future Perfect Continuous','مستقبل تمام جاری','Subject + will have been + V1-ing','مستقبل کے کسی وقت تک کام کتنی دیر سے جاری ہوگا۔','for, by next month, by June',[['She will have been studying for three hours.','شی وِل ہیو بِین اسٹڈینگ فار تھری آورز','وہ تین گھنٹے سے پڑھ رہی ہوگی۔'],['They will have been playing since noon.','دے وِل ہیو بِین پلیئنگ سنس نون','وہ دوپہر سے کھیل رہے ہوں گے۔'],['I will have been working here for a year.','آئی وِل ہیو بِین ورکنگ ہِیر فار اے ایئر','مجھے یہاں کام کرتے ایک سال ہو چکا ہوگا۔']]]]];
+function tensesV(){const g=TN[0],t=TN[1];
+ if(g===null)return head('Tenses','')+"<div class='sech'>⏳ Choose a tense</div><p class='sdesc'>English has 3 main tenses. Each one has 4 types.</p>"+TG.map((x,i)=>`<button class='tgc' data-tg='${i}'><span>${x[1]}</span><div><b>${x[0]}</b><i class='ur' lang='ur'>${x[2]}</i><small>${x[3]}</small></div></button>`).join('');
+ const G=TG[g];
+ if(t===null)return head('Tenses','')+`<button class='go' data-tup='1'>◀ All tenses</button><div class='sech'>${G[1]} ${G[0]}</div><p class='sdesc'>${G[3]}. Tap a type to learn it.</p>`+TSN[g].map((x,i)=>`<button class='tgc' data-tt='${i}'><span>${i+1}</span><div><b>${x[0]}</b><i class='ur' lang='ur'>${x[1]}</i></div></button>`).join('');
+ const x=TSN[g][t];
+ return head('Tenses','')+`<button class='go' data-tup='1'>◀ ${G[0]}</button><div class='sech'>${x[0]}</div><div class='ur' lang='ur' style='font-size:20px;margin-bottom:8px;color:#8C3B2A'>${x[1]}</div><div class='card'><div class='ex'>Formula</div><div class='en' style='font-size:17px'>${x[2]}</div></div><div class='card'><div class='ex'>When to use it</div><div class='mean ur' lang='ur' style='font-size:18px'>${x[3]}</div></div><div class='card'><div class='ex'>Signal words</div><div class='en' style='font-size:16px'>${x[4]}</div></div><div class='tag'>Examples (tap to listen)</div>`+x[5].map(e=>`<button class='exr' data-say='${e[0]}'><b>${e[0]}</b><i class='ur' lang='ur'>${e[1]}</i><span class='ur' lang='ur'>${e[2]}</span></button>`).join('')}
+TG.unshift(TG.splice(1,1)[0]);TSN.unshift(TSN.splice(1,1)[0]);
+{const bi=HM.findIndex(h=>h[0]==='board'),gi=HM.findIndex(h=>h[0]==='games');[HM[bi],HM[gi]]=[HM[gi],HM[bi]]}
+views.tenses=tensesV;
+{const ti=HM.findIndex(h=>h[0]==='tests');if(ti>=0)HM[ti]=['search','🔍','Self']}
+tabs.push(['search','🔍','Self']);
+let SR={res:null,heard:''},SRL='ur-PK';
+const nrm=s=>String(s).toLowerCase().replace(/[\u064B-\u065F\u0670\u06D4\u061F\u060C.,!?]/g,'').replace(/\s+/g,' ').trim();
+function srLook(list){const out=[],sn=new Set();for(const raw of list){const t=nrm(raw);if(!t)continue;for(const w of W){const m=w[2].split(/[/(]/).map(nrm).filter(Boolean),en=w[0].toLowerCase();if(!sn.has(w[0])&&(m.includes(t)||en===t||nrm(w[1])===t||t.split(' ').includes(en)||t.split(' ').some(k=>m.includes(k)))){sn.add(w[0]);out.push(w)}}if(out.length)break}return out.slice(0,5)}
+function seqTarget(d){const S=['home','tests','board'],i=S.indexOf(cur);if(cur==='intro')return null;if(d>0)return i>=0?S[i+1]||null:null;return i<0?'home':i>0?S[i-1]:'intro'}
+function bfu(){if(cur!=='search'){if(SRT){clearInterval(SRT);SRT=null}if(DICT&&DICT.active())DICT.stop();if(SRW){try{SRW.stop()}catch(e){}SRW=null}}const a=seqTarget(-1),b=seqTarget(1);bf.children[0].disabled=!a;bf.children[1].disabled=!b;bf.children[0].lastChild.nodeValue=cur==='tests'?'Home':cur==='board'?'Tests':'Back';bf.children[1].firstChild.nodeValue=cur==='home'?'Tests':cur==='tests'?'Leaderboard':'Next';bf.style.bottom=cur==='intro'?'calc(20px + env(safe-area-inset-bottom,0px))':''}
+function nav2(d){const t=seqTarget(+d);if(!t)return;if(t==='tests')TS=null;go(t)}
+function srHtml(){if(SR.res===null)return'';if(!SR.res.length)return`<div class='card'>I heard “${esc(String(SR.heard))}”, but could not find it in the word list. Please try again.</div>`;return SR.res.map(w=>`<button class='exr' data-say='${esc(w[0])}'><b>${EM[w[0]]||''} ${w[0]}</b><i class='ur' lang='ur'>${w[1]}</i><span class='ur' lang='ur'>${w[2]}</span></button>`).join('')}
+function search(){return head('Search','')+`<div class='sech'>🔍 Say any word</div><p class='sdesc'>Tap the mic and say a word in Urdu, Roman Urdu or English. You will see the English word.</p><div style='text-align:center;margin:12px 0 6px'><button class='micb' data-act='srmic' aria-label='Speak'>🎤</button></div><div style='text-align:center'><button class='go' data-act='srlang'>🌐 ${SRL==='ur-PK'?'Urdu / Roman Urdu':'English'} · tap to switch</button></div><div id='srr' style='margin-top:10px'>${srHtml()}</div><div class='row' style='margin-top:12px'><input id='sq' placeholder='Or type an Urdu or English word'><button class='go' style='flex:none' data-act='srfind'>Find</button></div>`}
+function srShow(){const o=document.getElementById('srr');if(o)o.innerHTML=srHtml();if(SR.res&&SR.res[0])sayQ([SR.res[0][0]])}
+function srMic(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,o=document.getElementById('srr');if(!R){o.textContent='Voice search does not work in this browser. Please try Chrome, or type a word below.';return}const r=new R();r.lang=SRL;r.maxAlternatives=5;o.textContent='🎧 Listening… say any word';r.onresult=e=>{const a=Array.from(e.results[0]).map(x=>x.transcript);SR.heard=a[0];SR.res=srLook(a);srShow()};r.onerror=()=>{o.textContent='Mic permission was not given or no voice was heard. Please try again.'};try{r.start()}catch(e){}}
+views.search=search;
+{const bi=HM.findIndex(h=>h[0]==='board');if(bi>=0)HM.splice(bi,1)}
+var DICT=null,SMP=null,SRW=null,SRON=false,SRT=null;
+if(window.claude&&claude.use){claude.use('dictation').then(d=>{if(!d)return;DICT=d;d.onFinal(e=>{const t=(e.text||'').trim();if(t&&cur==='search')srAdd(t)});d.onState(e=>{SRON=e.state==='listening'||e.state==='starting';srMicUI()})}).catch(()=>{});claude.use('sample').then(s=>{SMP=s}).catch(()=>{})}
+function srMicUI(){const b=document.getElementById('micc');if(b)b.className='micc'+(SRON?' on':'')}
+function srNote(t){const o=document.getElementById('srout');if(o)o.innerHTML="<p class='srn'>"+t+'</p>'}
+function srStep(){document.querySelectorAll('.srl').forEach(q=>{const t=q._t||'',n=q._n||0;if(n<t.length){q._n=Math.min(t.length,n+2);q.textContent=t.slice(0,q._n)+'\u258d'}else if(t&&q.textContent!==t)q.textContent=t})}
+function srAdd(t){const o=document.getElementById('srout');if(!o)return;const p=document.createElement('p');p.className='srl';p._t='';p._n=0;p.textContent='\u2026';o.appendChild(p);if(!SMP){srNote('Translation is not available in this view.');return}SMP('You are a live interpreter. The text below was spoken by a person in Urdu, Roman Urdu or English and may contain speech-recognition mistakes. Write what they meant as clear, correct, natural English. Output only the English text.\n\n'+t,{modelTier:'quick',onText:e=>{p._t=e.text}}).then(r=>{p._t=r.text}).catch(e=>{p._t=e&&e.code==='not_granted'?'(Permission to use Claude was not given.)':'(Could not translate. Please try again.)'})}
+function srWeb(){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){srNote('Voice input is not available in this view.');return}const r=new R();r.lang='ur-PK';r.continuous=true;r.interimResults=false;r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)srAdd(e.results[i][0].transcript.trim())};r.onerror=()=>{srNote('Mic permission was not given, or no voice was heard.')};r.onend=()=>{SRW=null;SRON=false;srMicUI()};try{r.start();SRW=r;SRON=true;srMicUI()}catch(e){}}
+function srToggle(){if(SRW){try{SRW.stop()}catch(e){}SRW=null;SRON=false;srMicUI();return}if(DICT){if(DICT.active()){DICT.stop();return}DICT.start({language:'ur'}).catch(e=>{if(e&&e.code==='unavailable')srWeb();else if(e&&e.code==='not_granted')srNote('Microphone permission was not given.')});return}srWeb()}
+function search(){if(!SRT)SRT=setInterval(srStep,30);return`<div class='srtop'><button class='micc${SRON?' on':''}' id='micc' data-act='smic' aria-label='Speak'><svg width='26' height='26' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6'/></svg></button></div><div id='srst' class='srn'></div><div id='srin'></div><div id='srout'></div>`}
+function srMicUI(){const b=document.getElementById('micc');if(b)b.className='micc'+(SRON?' on':'');const s=document.getElementById('srst');if(s&&SRON&&!s.textContent)s.textContent='Listening\u2026'}
+function srNote(t,u){const s=document.getElementById('srst');if(s){s.textContent=t;s.className='srn'+(u?' ur':'')}}
+function srLive(t){srNote(t||(SRON?'Listening\u2026':''),!!t)}
+function srFallback(m){srNote(m);const i=document.getElementById('srin');if(i&&!i.innerHTML)i.innerHTML="<input id='sin' class='sin' enterkeyhint='go' placeholder='Tap here, then use your keyboard microphone'>"}
+function srAdd(t){const o=document.getElementById('srout');if(!o)return;srNote('');o.insertAdjacentHTML('beforeend',`<div class='srb'><div class='sru ur' lang='ur'>${esc(t)}</div><p class='srl'>\u2026</p></div>`);const p=o.lastElementChild.querySelector('.srl');p._t='';p._n=0;if(!SMP){p._t='(Translation is not available in this view.)';return}SMP('You are a live interpreter. The text below was spoken by a person in Urdu, Roman Urdu or English and may contain speech-recognition mistakes. Write what they meant as clear, correct, natural English. Output only the English text.\n\n'+t,{modelTier:'quick',onText:e=>{p._t=e.text}}).then(r=>{p._t=r.text}).catch(e=>{p._t=e&&e.code==='not_granted'?'(Permission to use Claude was not given.)':'(Could not translate. Please try again.)'})}
+function srWeb(){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){srFallback('Voice input is not available in this view. Use your keyboard microphone instead.');return}const r=new R();r.lang='ur-PK';r.continuous=true;r.interimResults=true;r.onresult=e=>{let live='';for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal){srAdd(x[0].transcript.trim());live=''}else live+=x[0].transcript}srLive(live)};r.onerror=e=>{const c=e&&e.error;if(c==='not-allowed'||c==='service-not-allowed')srFallback('The microphone is blocked in this view. Tap the box and use your keyboard microphone instead.');else if(c==='no-speech')srNote('I could not hear anything. Please try again.');else if(c==='language-not-supported')srFallback('Urdu voice input is not supported here. Use your keyboard microphone instead.');else srNote('Voice input stopped. Please try again.')};r.onend=()=>{SRW=null;SRON=false;srMicUI()};try{r.start();SRW=r;SRON=true;srMicUI()}catch(e){srFallback('Voice input could not start. Use your keyboard microphone instead.')}}
+function srToggle(){if(SRW){try{SRW.stop()}catch(e){}SRW=null;SRON=false;srMicUI();srNote('');return}if(DICT){if(DICT.active()){DICT.stop();return}DICT.start({language:'ur'}).catch(e=>{const c=e&&e.code;if(c==='unavailable')srWeb();else if(c==='not_granted')srFallback('Microphone permission was not given. Use your keyboard microphone instead.');else if(c!=='dismissed'&&c!=='stopped')srNote('Could not start listening. Please try again.')});return}srWeb()}
+if(window.claude&&claude.use){claude.use('dictation').then(d=>{if(!d)return;d.onPartial(e=>srLive(e.text));d.onState(e=>{if(e.state==='idle'&&e.reason==='not_granted')srFallback('Microphone permission was not given. Use your keyboard microphone instead.')})}).catch(()=>{})}
+document.addEventListener('change',e=>{if(e.target&&e.target.id==='sin'){const t=e.target.value.trim();e.target.value='';if(t)srAdd(t)}});
+var DR=null;
+function mgCol(k){return MG[k].map(x=>`<div class='mt2${MG.done.includes(x.id)?' ok':''}${x.s==='u'?' ur':''}' data-s='${x.s}' data-id='${x.id}'>${x.t}</div>`).join('')}
+function mgDone(){const w=document.getElementById('mgw'),s=document.getElementById('mgs');if(!w||!s||!MG)return;const r=w.getBoundingClientRect();s.innerHTML=`<defs><marker id='ahm' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto'><path d='M0 0L10 5L0 10z' fill='#7A1F2B'/></marker><marker id='ahg' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto'><path d='M0 0L10 5L0 10z' fill='#4F7F52'/></marker></defs>`+MG.done.map(id=>{const a=w.querySelector(`[data-s='e'][data-id='${id}']`),b=w.querySelector(`[data-s='u'][data-id='${id}']`);if(!a||!b)return'';const A=a.getBoundingClientRect(),B=b.getBoundingClientRect();return`<line x1='${A.right-r.left}' y1='${A.top+A.height/2-r.top}' x2='${B.left-r.left}' y2='${B.top+B.height/2-r.top}' stroke='#4F7F52' stroke-width='3' stroke-linecap='round' marker-end='url(#ahg)'/>`}).join('')}
+function matchPage(){if(!MG)newMatch();const all=MG.done.length===6;setTimeout(mgDone,0);return head('Games','')+"<button class='go' data-gm='menu' style='margin:2px 0 8px'>\u25c0 All games</button>"+(all?"<div class='card'><div class='en'>\ud83c\udf89 Great! All pairs matched (+3 \u2b50)</div><button class='go' style='margin-top:8px' data-gm='newm'>New game</button></div>":"<div class='ex' style='margin-bottom:6px'>Drag an arrow from an English word to its Urdu meaning</div>")+`<div class='mgw' id='mgw'><svg class='mgs' id='mgs'></svg><div class='mgc'>${mgCol('L')}</div><div class='mgc'>${mgCol('R')}</div></div>`}
+function mgTmp(e){const w=document.getElementById('mgw'),s=document.getElementById('mgs');if(!w||!s||!DR)return;const r=w.getBoundingClientRect(),a=DR.t.getBoundingClientRect(),x1=(DR.s==='e'?a.right:a.left)-r.left,y1=a.top+a.height/2-r.top;let l=document.getElementById('mgt');if(!l){s.insertAdjacentHTML('beforeend',"<line id='mgt' stroke='#7A1F2B' stroke-width='3' stroke-linecap='round' marker-end='url(#ahm)'/>");l=document.getElementById('mgt')}l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',e.clientX-r.left);l.setAttribute('y2',e.clientY-r.top)}
+document.addEventListener('pointerdown',e=>{const t=e.target&&e.target.closest&&e.target.closest('.mt2');if(!t||t.classList.contains('ok')||!document.getElementById('mgw'))return;DR={t,s:t.dataset.s,id:+t.dataset.id};mgTmp(e)});
+document.addEventListener('pointermove',e=>{if(DR)mgTmp(e)});
+document.addEventListener('pointercancel',()=>{if(DR){DR=null;const l=document.getElementById('mgt');if(l)l.remove()}});
+document.addEventListener('pointerup',e=>{if(!DR)return;const d=DR;DR=null;const l=document.getElementById('mgt');if(l)l.remove();const x=document.elementFromPoint(e.clientX,e.clientY),o=x&&x.closest&&x.closest('.mt2');if(o&&o!==d.t&&o.dataset.s!==d.s&&!o.classList.contains('ok')){if(+o.dataset.id===d.id){MG.done.push(d.id);if(MG.done.length===6)star(3);render()}else{o.classList.add('bad');setTimeout(()=>o.classList.remove('bad'),400)}}});
+const _gOld=views.games;views.games=()=>gm==='match'?matchPage():_gOld();
+function tick(){const e=document.getElementById('tm'),f=document.getElementById('tf');if(e)e.textContent=tl>0?'⏱ '+tl+'s':'⏰ Time up!';if(f){f.style.width=Math.max(tl,0)/20*100+'%';f.style.background=tl<=5?'#C0392B':''}}
+async function saveName(){const v=document.getElementById('nm').value.trim().slice(0,20),m=document.getElementById('nmmsg');if(!v){m.textContent='Please enter your name first 🙂';return}me=v;try{localStorage.setItem('es_name',v)}catch(e){}m.textContent='Welcome, '+v+'! 🎉';upd(()=>({name:v}))}
+function mic(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,o=document.getElementById('sr');if(!R){o.textContent='Mic check does not work in this browser. Please try Chrome.';return}const r=new R();r.lang='en-US';r.maxAlternatives=3;o.textContent='🎧 Listening…';r.onresult=e=>{const w=W[sp.i][0].toLowerCase(),a=Array.from(e.results[0]).map(x=>x.transcript.toLowerCase().replace(/[^a-z ]/g,'').trim()),ok=a.some(t=>t===w||t.split(' ').includes(w));o.innerHTML=ok?'✅ Great! That was correct (+1 ⭐)':'🔁 You said: <b>'+a[0]+'</b>. Please try again';if(ok)star(1)};r.onerror=()=>{o.textContent='Mic permission was not given or no voice was heard. Please try again.'};try{r.start()}catch(e){}}
+let SC=null,MS=null;
+const shuf=a=>[...a].sort(()=>Math.random()-.5);
+const GL=[['match','🔗','Match','جوڑیاں ملائیں'],['pic','🖼️','Picture quiz','تصویر پہچانیں'],['scr','🔤','Word Scramble','لفظ بنائیں'],['miss','✍️','Missing Letter','گم شدہ حرف']];
+function pickW(){const a=W.filter(w=>/^[A-Za-z]{3,8}$/.test(w[0]));return a[Math.floor(Math.random()*a.length)]}
+function newScr(){const w=pickW(),s=w[0].toLowerCase();SC={w:s,m:w[2],e:EM[w[0]],L:shuf(s.split('')).map(c=>({c,u:false})),a:[],msg:'',sc:SC?SC.sc:0}}
+function newMiss(){const w=pickW(),s=w[0].toLowerCase(),i=Math.floor(Math.random()*s.length),c=s[i],o=shuf('abcdefghijklmnopqrstuvwxyz'.split('').filter(x=>x!==c)).slice(0,3);o.push(c);MS={w:s,i,c,m:w[2],e:EM[w[0]],o:shuf(o),sc:MS?MS.sc:0}}
+function games(){const h=head('Games','مزے دار گیمز');if(!gm||gm==='menu')return h+"<div class='grid'>"+GL.map(g=>`<button class='tile' data-gm='${g[0]}'><span>${g[1]}</span>${g[2]}<small class='ur' lang='ur'>${g[3]}</small></button>`).join('')+'</div>';const bk="<button class='go' data-gm='menu' style='margin:2px 0 12px'>◀ All games</button>";
+if(gm==='pic'){if(!PG)newPic();return h+bk+`<div class='fc'><div class='emo'>${EM[PG.w]}</div><div class='e'>Yeh kya hai? · Score ${PG.sc}</div></div>`+PG.o.map(o=>`<button class='opt' data-pa='${o}'>${o}</button>`).join('')}
+if(gm==='scr'){if(!SC)newScr();return h+bk+`<div class='fc'><div class='emo'>${SC.e||'🔤'}</div><div class='m ur' lang='ur'>${SC.m}</div><div class='slots'>${SC.a.map(j=>SC.L[j].c).join('')||'…'}</div><div class='e'>Score ${SC.sc} · ${SC.msg||'Harf sahi tarteeb mein lagayein'}</div></div><div class='lets'>${SC.L.map((x,i)=>`<button class='mt' ${x.u?'disabled':''} data-sl='${i}'>${x.c}</button>`).join('')}</div><button class='go' style='margin-top:12px' data-act='sclr'>Clear</button>`}
+if(gm==='miss'){if(!MS)newMiss();return h+bk+`<div class='fc'><div class='emo'>${MS.e||'✍️'}</div><div class='m ur' lang='ur'>${MS.m}</div><div class='slots'>${MS.w.split('').map((x,k)=>k===MS.i?'_':x).join('')}</div><div class='e'>Score ${MS.sc} · Kaun sa harf gum hai?</div></div><div class='mg'>${MS.o.map(o=>`<button class='opt' data-ml='${o}'>${o}</button>`).join('')}</div>`}
+if(!MG)newMatch();const d=MG.done;return h+bk+(d.length===6?"<div class='card'><div class='en'>🎉 Wah! Sab match ho gaye (+3 ⭐)</div><button class='go' style='margin-top:8px' data-gm='newm'>New game</button></div>":"<div class='ex'>English aur Urdu ko jorein</div>")+"<div class='mg'>"+['L','R'].map(k=>'<div>'+MG[k].map(x=>{const key=x.s+x.id,ok=d.includes(x.id);return`<button class='mt ${ok?'ok':''} ${MG.sel===key?'sel':''} ${x.s==='u'?'ur':''}' ${ok?'disabled':''} data-mt='${key}'>${x.t}</button>`}).join('')+'</div>').join('')+'</div>'}
+bfu();
+function render(){nav.innerHTML=tabs.map(t=>`<button role="tab" aria-selected="${t[0]===cur}" data-tab="${t[0]}"><span>${t[1]}</span>${t[2]}</button>`).join("");app.dataset.p=cur;app.innerHTML=views[cur]()+(cur==='intro'?'':'<p class="credit">Created by Rabia · 2026</p>');window.scrollTo(0,0);autoSpeak()}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.ans!==undefined||b.dataset.ta!==undefined||b.dataset.pa!==undefined||b.dataset.ml!==undefined)clearInterval(tq);
+ if(b.dataset.snd){snd=!snd;if(!snd)try{speechSynthesis.cancel()}catch(e){}render();return}
+ if(b.dataset.act==='end'){clearInterval(tq);Q.end=true;render();return}
+ if(b.dataset.t){TS=b.dataset.t==='x'?null:mkTest(+b.dataset.t);render();return}
+ if(b.dataset.ta!==undefined){const it=TS.items[TS.i];document.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.dataset.ta===it.a)o.classList.add('ok');else if(o===b)o.classList.add('bad')});if(b.dataset.ta===it.a)TS.m++;setTimeout(()=>{TS.i++;if(TS.i>=50)finishTest();render()},700);return}
+ if(b.dataset.w){wAct(b.dataset.w);return}
+ if(b.dataset.say){say(b.dataset.say);return}
+ if(b.dataset.tab){if(b.dataset.tab==='games')gm='menu';if(b.dataset.tab==='tenses')TN=[null,null];if(b.dataset.tab==='tests')TS=null;go(b.dataset.tab);return}
+ if(b.dataset.act==='istart'){const i=document.getElementById('nm'),v=i.value.trim().slice(0,20);if(!v){i.style.borderColor='#A33A2E';i.placeholder='Please enter your name first';i.focus();return}me=v;try{localStorage.setItem('es_name',v)}catch(e){}upd(()=>({name:v}));go('home');return}
+ if(b.dataset.nv==='-1'&&cur==='tenses'&&TN[0]!==null){if(TN[1]!==null)TN[1]=null;else TN[0]=null;render();return}
+ if(b.dataset.nv==='-1'&&cur==='games'&&gm&&gm!=='menu'){gm='menu';render();return}
+ if(b.dataset.nv==='-1'&&cur==='tests'&&TS){clearInterval(tq);TS=null;render();return}
+ if(b.dataset.nv){nav2(b.dataset.nv);return}
+ if(b.dataset.sl!==undefined){const i=+b.dataset.sl;if(!SC.L[i].u){SC.L[i].u=true;SC.a.push(i);SC.msg='';if(SC.a.length===SC.w.length){if(SC.a.map(j=>SC.L[j].c).join('')===SC.w){SC.sc++;star(1);SC.msg='✅ Wah!';render();setTimeout(()=>{newScr();render()},900);return}SC.msg='🔁 Dobara koshish';SC.L.forEach(x=>x.u=false);SC.a=[]}}render();return}
+ if(b.dataset.act==='sclr'){SC.L.forEach(x=>x.u=false);SC.a=[];render();return}
+ if(b.dataset.ml){const ok=b.dataset.ml===MS.c;document.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.dataset.ml===MS.c)o.classList.add('ok');else if(o===b)o.classList.add('bad')});if(ok){MS.sc++;star(1)}setTimeout(()=>{newMiss();render()},900);return}
+ if(b.dataset.tg!==undefined){TN=[+b.dataset.tg,null];render();return}
+ if(b.dataset.tt!==undefined){TN[1]=+b.dataset.tt;render();return}
+ if(b.dataset.tup){if(TN[1]!==null)TN[1]=null;else TN[0]=null;render();return}
+ if(b.dataset.act==='smic'){srToggle();return}
+ if(b.dataset.act==='srmic'){srMic();return}
+ if(b.dataset.act==='srlang'){SRL=SRL==='ur-PK'?'en-US':'ur-PK';render();return}
+ if(b.dataset.act==='srfind'){const v=document.getElementById('sq').value;SR.heard=v;SR.res=srLook([v]);srShow();return}
+ if(b.dataset.nv==='-1'&&cur==='tenses'&&TN[0]!==null){if(TN[1]!==null)TN[1]=null;else TN[0]=null;render();return}
+ if(b.dataset.nv==='-1'&&cur==='games'&&gm&&gm!=='menu'){gm='menu';render();return}
+ if(b.dataset.act==='mic'){mic();return}
+ if(b.dataset.act==='spn'){sp.i=(sp.i+1)%W.length;render();return}
+ if(b.dataset.gm){if(b.dataset.gm==='newm')newMatch();else gm=b.dataset.gm;render();return}
+ if(b.dataset.mt){const k=b.dataset.mt;if(!MG.sel||MG.sel[0]===k[0])MG.sel=k;else{if(MG.sel.slice(1)===k.slice(1)){MG.done.push(+k.slice(1));if(MG.done.length===6)star(3)}MG.sel=null}render();return}
+ if(b.dataset.pa){const ok=b.dataset.pa===PG.w;document.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.dataset.pa===PG.w)o.classList.add('ok');else if(o===b)o.classList.add('bad')});if(ok){PG.sc++;star(1)}setTimeout(()=>{newPic();render()},800);return}
+ if(b.dataset.act==='save'){saveName();return}
+ if(b.dataset.act==='again'){newQuiz();render();return}
+ if(b.dataset.ans!==undefined){
+  const it=Q.items[Q.i],right=it.w[0];
+  document.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.dataset.ans===right)o.classList.add('ok');else if(o===b)o.classList.add('bad')});
+  if(b.dataset.ans===right)Q.score++;sayQ([right]);
+  setTimeout(()=>{Q.i++;render()},900);
+ }
+});
+
+/* ===== Standalone mode (GitHub Pages / installed app): there is no Claude runtime here ===== */
+if(!(window.claude&&claude.use)){
+ let LS={};try{LS=JSON.parse(localStorage.getItem('es_local')||'{}')}catch(e){}
+ const saveLS=()=>{try{localStorage.setItem('es_local',JSON.stringify(LS))}catch(e){}};
+ const sync=()=>{const a=Object.entries(LS).map(([k,v])=>Object.assign({id:k},v));rows=a.slice().sort((x,y)=>(y.points||0)-(x.points||0)).slice(0,20);rows2=a.filter(x=>x.tTotal!=null).sort((x,y)=>(y.tTotal||0)-(x.tTotal||0)).slice(0,20)};
+ db=true;
+ upd=async function(f){if(!me)return;const k=me.toLowerCase();uid=k;const o=LS[k]||{};LS[k]=Object.assign({},o,f(o),{name:me});saveLS()};
+ const _vb=views.board;
+ views.board=()=>{sync();return _vb().replace('Top players (online)','Top players (on this device)')};
+ SMP=async function(p){
+  const t=p.split('\n\n').slice(1).join('\n\n').trim();
+  if(!/[\u0600-\u06FF]/.test(t))return{text:t};
+  const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(t)+'&langpair=ur|en');
+  const j=await r.json();
+  let x=(j&&j.responseData&&j.responseData.translatedText)||t;
+  x=new DOMParser().parseFromString(x,'text/html').documentElement.textContent;
+  return{text:x};
+ };
+}
+
+render();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+</body>
+</html>
